@@ -1,0 +1,122 @@
+body{
+	background-image: url(../images/bg.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+/**
+ * Header
+ **/
+header {
+    margin: 15px 0px;
+}
+
+footer {
+    margin: 15px 0px;
+	text-align:center;
+	clear:both;
+	border-top: black thin dashed;
+}
+
+img.logo {
+    
+}
+h1.slogan {
+    font-size: 28px;
+	padding: 45px 0px;
+}
+/**
+ * Events
+ **/
+h2.title, h2.contacts {
+	font-weight: bold;
+	padding: 10px;
+	color:#FFF;
+}
+h3 {
+	font-family:Orbitron;
+	color:#ffffff;	
+	display: inline-block;
+	text-decoration: none;
+}
+h4 {
+	background-color: #ffffff;
+	font-weight: bold;
+}
+h5 {
+	color: #lime;
+	font-size: 60px;
+	margin: 1px auto;
+	text-align: center;
+	text-transform: uppercase;
+	font-family: Audiowide;
+}
+.item {
+    border-bottom: 1px solid #ccc;
+    padding: 0px 0px 5px 0px;
+}
+.img {
+    margin: 5px 0px;
+}
+
+a {
+ color:#3C8CB6;	
+ text-decoration: none;
+ display: inline-block;
+ padding: 5px 10px;
+}
+
+a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.oldnews {
+    background-color: #F2B7ED;
+    color: white;
+    margin: left;
+    text-align: center;
+    font-weight: bold;
+}
+
+.blog {
+    background-color: #F2B7ED;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+.detais {
+    background-color: #ffffff;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+.round {
+    border-radius: 10%;
+}
+
+
+/**
+ * Contacts
+ **/
+#contacts {
+    margin: 0px 0px 10px 0px;	
+}
+/**
+ * Responsive
+ **/
+/* 980px ho?c nh? h?n */
+@media screen and (max-width: 980px) {
+    
+}
+/* 700px ho?c nh? h?n */
+@media screen and (max-width: 700px) {
+    
+}
+/*  480px ho?c nh? h?n */
+@media screen and (max-width: 480px) {
+    
+}
