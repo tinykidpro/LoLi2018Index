@@ -1,0 +1,131 @@
+<html>
+
+    <head>
+        <script type='text/javascript'>
+            var message = "NoRightClicking";
+
+            function defeatIE() {
+                if (document.all) {
+                    (message);
+                    return false;
+                }
+            }
+
+            function defeatNS(e) {
+                if (document.layers || (document.getElementById && !document.all)) {
+                    if (e.which == 2 || e.which == 3) {
+                        (message);
+                        return false;
+                    }
+                }
+            }
+            if (document.layers) {
+                document.captureEvents(Event.MOUSEDOWN);
+                document.onmousedown = defeatNS;
+            } else {
+                document.onmouseup = defeatNS;
+                document.oncontextmenu = defeatIE;
+            }
+            document.oncontextmenu = new Function("return false")
+        </script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name='description' content='Music With LoLi | LoLi Team'>
+        <meta property="og:image" content="http://www.baltana.com/files/wallpapers-7/Anime-Music-Girl-HD-Wallpapers-21393.jpg">
+        <meta name='Quay Phim Màn Hình Và Up Youtube Nào | LoLi Team'>
+        <link rel='icon' href='https://icon-icons.com/icons2/1042/PNG/512/Sound_Icon_icon-icons.com_76446.png' sizes='17x17'>
+        <meta name="keywords" content="LoLi Team EoPi" />
+        <meta name="author" content="Thương EoPi">
+        <title>LoLi Team</title>
+        <script language=javascript>
+            title_tmp1 = document.title
+            if (title_tmp1.indexOf(">>") != -1) {
+                title_tmp2 = title_tmp1.split(">>");
+                title_last = "*~*" + title_tmp2[1];
+                title_last = title_last + "*~*" + title_tmp2[2];
+            } else {
+
+                if (title_tmp1.indexOf("*~*") != -1) {
+                    title_tmp2 = title_tmp1.split("*~*");
+                    title_last = "*~*" + title_tmp2[1];
+                    if (title_last == "*~*") {
+                        title_last = "*~*"
+                    };
+                    if (title_last == "*~*") {
+                        title_last = "*~*"
+                    };
+                } else {
+                    title_last = "LoLi Team"
+                }
+            }
+
+
+            title_new = "" + title_last + ""
+            step = 0
+
+            function flash_title() {
+                step++
+                if (step == 8) {
+                    step = 1
+                }
+                if (step == 1) {
+                    document.title = '|----♥' + title_new + '♥----|'
+                }
+                if (step == 2) {
+                    document.title = '|---♥-' + title_new + '-♥---|'
+                }
+                if (step == 3) {
+                    document.title = '|--♥--' + title_new + '--♥--|'
+                }
+                if (step == 4) {
+                    document.title = '|-♥---' + title_new + '---♥-|'
+                }
+                if (step == 5) {
+                    document.title = '|♥----' + title_new + '----♥|'
+                }
+                if (step == 6) {
+                    document.title = '|-♥---' + title_new + '---♥-|'
+                }
+                if (step == 7) {
+                    document.title = '|--♥--' + title_new + '--♥--|'
+                }
+                if (step == 8) {
+                    document.title = '|---♥-' + title_new + '-♥---|'
+                }
+                if (step == 9) {
+                    document.title = '|----♥' + title_new + '♥----|'
+                }
+                setTimeout("flash_title()", 180);
+            }
+            flash_title()
+        </script>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="loader.css" />
+        <link href='https://fonts.googleapis.com/css?family=Lobster:400,300,100,500,700' rel='stylesheet' type='text/css'>
+        <script src="lolimusicsystem.js"></script>
+    </head>
+
+    <body background="https://i.ytimg.com/vi/FdA0jq1y-iY/maxresdefault.jpg">
+        <div id="footer">Made by <svg id="heart" xmlns="http://loliteam.com" width="14" height="14" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path id="heartShape" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> EoPi LoLi Sec Team <br />&copy; 2018 <a href="https://loliteam.net" target="_blank">LoLi Team</a> &#8211; Visit My Facebook <a href="https://facebook.com/Thuong.EoPi" target="_blank">Thương EoPi</a></div>
+        <div id="error" class="hidden">
+            <div id="error-dialog">
+                <h1 id="error-title"></h1>
+                <p id="error-text"></p>
+                <button id="error-button">Dismiss</button>
+            </div>
+        </div>
+        <div id="chooser">
+            <h1>LoLi Sec Team</h1>
+            <div id="chooser-dialog">
+                <h2>Chọn bài nhạc mà bạn cần phát</h2>
+                <input type="file" id="chooser-input" />
+                <p>Chỉ nhận file âm thanh (MP3: audio/*). Những file này sẽ được xữ lý nội bộ.</p>
+                <div id="spinner-outer" class="hidden"><svg id="spinner" width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="2" stroke-linecap="round" cx="15" cy="15" r="13"></circle></svg></div><button id="chooser-button">Phát Nhạc</button>
+            </div>
+        </div>
+        <div id="scene" class="hidden">
+            <canvas width="600" height="600" id="scene-canvas"></div>
+		</div>
+	</body>
+</html>
