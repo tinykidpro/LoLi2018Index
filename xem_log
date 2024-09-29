@@ -1,0 +1,51 @@
+#!/bin/bash
+# Ham kiem tra va hien thi log tu mot tep hoac thu muc cu the
+view_log() {
+    if [[ -d "$1" ]]; then
+        echo "Hien thi 10 dong cuoi cung cua tat ca cac tep log trong thu muc: $1"
+        for log_file in "$1"/*; do
+            if [[ -f "$log_file" ]]; then
+                echo -e "\n--- $log_file ---"
+                tail -n 10 "$log_file"
+            fi
+        done
+    elif [[ -f "$1" ]]; then
+        echo -e "\n--- Hien thi 10 dong cuoi cung cua tep log: $1 ---"
+        tail -n 10 "$1"
+    else
+        echo "Khong tim thay tep hoac thu muc log: $1"
+    fi
+}
+# Tuy chon menu
+while true; do
+    echo "=== Menu Xem Log ==="
+    echo "1. Xem /var/log/auth.log"
+    echo "2. Xem log trong /var/log/apache2/"
+    echo "3. Xem log trong /var/log/apt/"
+    echo "4. Xem log trong /opt/tomcat/logs/"
+    echo "5. Thoat"
+    read -p "Nhap lua chon (1-5): " choice
+    case $choice in
+        1)
+            view_log "/var/log/auth.log"
+            ;;
+        2)
+            view_log "/var/log/apache2/"
+            ;;
+        3)
+            view_log "/var/log/apt/"
+            ;;
+        4)
+            view_log "/opt/tomcat/logs/"
+            ;;
+        5)
+            echo "Thoat..."
+            break
+            ;;
+        *)
+            echo "Lua chon khong hop le, vui long chon tu 1-5."
+            ;;
+    esac
+    echo -e "\nNhan Enter de tiep tuc..."
+    read
+done
