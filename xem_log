@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Author: Eopi Noriko
+# Date: 17/09/2024
+# Mo ta: Script nay giup nguoi dung de dang xem cac tep log trong cac thu muc quan trong nhu /var/log/apache2/, /var/log/auth.log/, /var/log/apt/, va /opt/tomcat/logs/.
+
 # Ham kiem tra va hien thi log tu mot tep hoac thu muc cu the
 view_log() {
     if [[ -d "$1" ]]; then
