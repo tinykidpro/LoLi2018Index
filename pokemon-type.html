@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảng Hiệu Ứng Hệ Pokémon</title>
+    <!-- Meta chuẩn SEO -->
+  <meta name="description" content="Website tính nhanh khắc hệ trong game Pokémon một cách đơn giản, dễ hiểu, được tạo bởi Eopi Noriko.">
+  <meta name="author" content="Eopi Noriko">
+  <meta name="keywords" content="Pokémon, khắc hệ Pokémon, tính khắc hệ, game Pokémon, Eopi Noriko">
+
+  <!-- Meta cho hiển thị trên Facebook (Open Graph) -->
+  <meta property="og:title" content="Tính Nhanh Khắc Hệ Pokémon | Eopi Noriko">
+  <meta property="og:description" content="Công cụ tính khắc hệ Pokémon nhanh chóng và chính xác, dễ dùng.">
+  <meta property="og:image" content="https://static.wikia.nocookie.net/pokemon/images/8/8c/PokemonTypes.png">
+  <meta property="og:url" content="https://loliteam.net">
+  <meta property="og:type" content="website">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1200px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 4px;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    th {
+      font-weight: bold;
+    }
+    .sticky {
+      position: sticky;
+      left: 0;
+      background: white;
+      z-index: 10;
+      min-width: 80px;
+    }
+    .type-header {
+      min-width: 60px;
+    }
+    .table-container {
+      max-height: 600px;
+      overflow: auto;
+    }
+    .type-label {
+      padding: 2px 4px;
+      border-radius: 4px;
+      margin: 0 2px;
+    }
+  </style>
+</head>
+<body class="p-4 bg-gray-100">
+  <div class="max-w-7xl mx-auto space-y-4">
+    <h1 class="text-2xl font-bold text-center">Bảng Hiệu Ứng Hệ Pokémon</h1>
+    
+    <!-- Checkbox Filters -->
+    <div id="typeFilters" class="flex flex-wrap gap-2"></div>
+    <button id="clearFilters" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Xóa bộ lọc</button>
+
+    <!-- Effect Details -->
+    <div id="effectDetails" class="hidden bg-white p-4 rounded-lg shadow space-y-2">
+      <h3 id="effectHeader" class="text-lg font-bold mb-2"></h3>
+      <div><strong>Gây 2× sát thương đến hệ:</strong> <span id="effect2x" class="ml-2"></span></div>
+      <div><strong>Gây 1× sát thương đến hệ:</strong> <span id="effect1x" class="ml-2"></span></div>
+      <div><strong>Gây 0.5× sát thương đến hệ:</strong> <span id="effect0_5x" class="ml-2"></span></div>
+    </div>
+
+    <!-- Type Chart -->
+    <div class="table-container bg-white rounded-lg shadow">
+      <table id="typeChart" class="text-xs">
+        <thead>
+          <tr>
+            <th class="p-2 sticky bg-white z-10">Tấn công \ Phòng thủ</th>
+            <!-- Types will be populated dynamically -->
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const types = [
+      'NORMAL', 'FIRE', 'WATER', 'ELECTRIC', 'GRASS', 'ICE', 'FIGHTING', 'POISON', 'GROUND', 'FLYING',
+      'PSYCHIC', 'BUG', 'ROCK', 'GHOST', 'DRAGON', 'DARK', 'STEEL', 'FAIRY'
+    ];
+
+    const typeColors = {
+      NORMAL: 'bg-gray-300', FIRE: 'bg-red-500', WATER: 'bg-blue-400', ELECTRIC: 'bg-yellow-300', GRASS: 'bg-green-500',
+      ICE: 'bg-blue-200', FIGHTING: 'bg-red-800', POISON: 'bg-purple-500', GROUND: 'bg-yellow-600', FLYING: 'bg-blue-200',
+      PSYCHIC: 'bg-pink-400', BUG: 'bg-lime-500', ROCK: 'bg-yellow-800', GHOST: 'bg-purple-800', DRAGON: 'bg-indigo-600',
+      DARK: 'bg-gray-800', STEEL: 'bg-gray-400', FAIRY: 'bg-pink-200'
+    };
+
+    const effectiveness = {
+      NORMAL:     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 0, 1, 1, 0.5, 1],
+      FIRE:       [1, 0.5, 0.5, 1, 2, 2, 1, 1, 1, 1, 1, 2, 0.5, 1, 0.5, 1, 2, 1],
+      WATER:      [1, 2, 0.5, 1, 0.5, 1, 1, 1, 2, 1, 1, 1, 2, 1, 0.5, 1, 1, 1],
+      ELECTRIC:   [1, 1, 2, 0.5, 0.5, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0.5, 1, 1, 1],
+      GRASS:      [1, 0.5, 2, 1, 0.5, 1, 1, 0.5, 2, 0.5, 1, 0.5, 2, 1, 0.5, 1, 0.5, 1],
+      ICE:        [1, 0.5, 0.5, 1, 2, 0.5, 1, 1, 2, 2, 1, 1, 1, 1, 2, 1, 0.5, 1],
+      FIGHTING:   [2, 1, 1, 1, 1, 2, 1, 0.5, 1, 0.5, 0.5, 0.5, 2, 0, 1, 2, 2, 0.5],
+      POISON:     [1, 1, 1, 1, 2, 1, 1, 0.5, 0.5, 1, 1, 1, 0.5, 0.5, 1, 1, 0, 2],
+      GROUND:     [1, 2, 1, 2, 0.5, 1, 1, 2, 1, 0, 1, 0.5, 2, 1, 1, 1, 2, 1],
+      FLYING:     [1, 1, 1, 0.5, 2, 1, 2, 1, 1, 1, 1, 2, 0.5, 1, 1, 1, 0.5, 1],
+      PSYCHIC:    [1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 0.5, 1, 1, 1, 1, 0, 0.5, 1],
+      BUG:        [1, 0.5, 1, 1, 2, 1, 0.5, 0.5, 1, 0.5, 2, 1, 1, 0.5, 1, 2, 0.5, 0.5],
+      ROCK:       [1, 2, 1, 1, 1, 2, 0.5, 1, 0.5, 2, 1, 2, 1, 1, 1, 1, 0.5, 1],
+      GHOST:      [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 0.5, 1, 1],
+      DRAGON:     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 0.5, 0],
+      DARK:       [1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 2, 1, 1, 2, 1, 0.5, 1, 0.5],
+      STEEL:      [1, 0.5, 0.5, 0.5, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 0.5, 2],
+      FAIRY:      [1, 0.5, 1, 1, 1, 1, 2, 0.5, 1, 1, 1, 1, 1, 1, 2, 2, 0.5, 1]
+    };
+
+    let selectedTypes = [];
+
+    // Populate Type Filters
+    const typeFilters = document.getElementById('typeFilters');
+    types.forEach(type => {
+      const label = document.createElement('label');
+      label.className = 'flex items-center gap-1';
+      label.innerHTML = `
+        <input type="checkbox" value="${type}" class="h-4 w-4">
+        <span class="text-sm px-2 py-1 rounded cursor-pointer ${typeColors[type]}">${type}</span>
+      `;
+      const span = label.querySelector('span');
+      span.addEventListener('click', () => {
+        console.log('Clicked type:', type);
+        renderEffectDetails();
+      });
+      typeFilters.appendChild(label);
+    });
+
+    // Populate Table Headers
+    const tableHeadRow = document.querySelector('#typeChart thead tr');
+    types.forEach(type => {
+      const th = document.createElement('th');
+      th.className = `p-2 text-center ${typeColors[type]} type-header`;
+      th.textContent = type;
+      tableHeadRow.appendChild(th);
+    });
+
+    // Populate Table Body
+    const tableBody = document.querySelector('#typeChart tbody');
+    function renderTable() {
+      tableBody.innerHTML = '';
+      types.forEach((atkType, rowIdx) => {
+        if (selectedTypes.length > 0 && !selectedTypes.includes(atkType)) return;
+        const tr = document.createElement('tr');
+        tr.className = 'border-t';
+        const td = document.createElement('td');
+        td.className = `p-2 font-bold sticky z-10 whitespace-nowrap ${typeColors[atkType]}`;
+        td.textContent = atkType;
+        tr.appendChild(td);
+        effectiveness[atkType].forEach(value => {
+          const td = document.createElement('td');
+          td.className = `p-2 text-center ${
+            value === 2 ? 'bg-green-300' :
+            value === 0.5 ? 'bg-red-300' :
+            value === 0 ? 'bg-black text-white' : ''
+          }`;
+          td.textContent = value === 2 ? '200%' : value === 1 ? '100%' : value === 0.5 ? '50%' : '0%';
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      });
+    }
+    renderTable();
+
+    // Render Effect Details
+    function renderEffectDetails() {
+      const effectDetails = document.getElementById('effectDetails');
+      const effectHeader = document.getElementById('effectHeader');
+      const effect2x = document.getElementById('effect2x');
+      const effect1x = document.getElementById('effect1x');
+      const effect0_5x = document.getElementById('effect0_5x');
+
+      if (selectedTypes.length === 0) {
+        effectDetails.className = 'hidden';
+        effectHeader.textContent = '';
+        effect2x.innerHTML = '';
+        effect1x.innerHTML = '';
+        effect0_5x.innerHTML = '';
+        return;
+      }
+
+      effectHeader.textContent = `Chi tiết hiệu ứng của hệ: ${selectedTypes.join(' + ')}`;
+      const grouped = { '2': [], '1': [], '0.5': [] };
+
+      // Calculate combined effectiveness
+      types.forEach((defType, idx) => {
+        let maxEffect = 0;
+
+        // Find the highest effectiveness against this defending type
+        selectedTypes.forEach(atkType => {
+          let effect = effectiveness[atkType][idx];
+          // Treat 0× as 0.5× per requirement
+          if (effect === 0) effect = 0.5;
+          maxEffect = Math.max(maxEffect, effect);
+        });
+
+        // Log for debugging
+        console.log(`Defending type: ${defType}, maxEffect: ${maxEffect}`);
+
+        // Assign to groups based on the highest effectiveness
+        if (maxEffect === 2) {
+          grouped['2'].push(defType);
+        } else if (maxEffect === 1) {
+          grouped['1'].push(defType);
+        } else {
+          grouped['0.5'].push(defType);
+        }
+      });
+
+      // Log the final grouped types
+      console.log('Grouped types:', grouped);
+
+      // Function to render types with colors
+      const renderTypesWithColors = (element, typeList) => {
+        element.innerHTML = ''; // Clear previous content
+        if (!typeList || typeList.length === 0) {
+          element.textContent = 'Không có';
+          return;
+        }
+        typeList.forEach((type, index) => {
+          if (!types.includes(type)) return; // Skip invalid types
+          const span = document.createElement('span');
+          span.className = `type-label ${typeColors[type]}`;
+          span.textContent = type;
+          element.appendChild(span);
+          if (index < typeList.length - 1) {
+            element.appendChild(document.createTextNode(', '));
+          }
+        });
+      };
+
+      renderTypesWithColors(effect2x, grouped['2']);
+      renderTypesWithColors(effect1x, grouped['1']);
+      renderTypesWithColors(effect0_5x, grouped['0.5']);
+
+      effectDetails.className = 'bg-white p-4 rounded-lg shadow space-y-2';
+    }
+
+    // Event Listeners
+    typeFilters.addEventListener('change', e => {
+      if (e.target.type === 'checkbox') {
+        const type = e.target.value;
+        selectedTypes = e.target.checked
+          ? [...selectedTypes, type]
+          : selectedTypes.filter(t => t !== type);
+        renderTable();
+        renderEffectDetails();
+      }
+    });
+
+    document.getElementById('clearFilters').addEventListener('click', () => {
+      selectedTypes = [];
+      document.querySelectorAll('#typeFilters input').forEach(input => input.checked = false);
+      renderTable();
+      renderEffectDetails();
+    });
+  </script>
+</body>
+</html>
