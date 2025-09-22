@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tam Quốc Miêu H5 – Hướng dẫn cài đặt trên Linux (bản cập nhật)</title>
+<meta name="description" content="Hướng dẫn cài Tam Quốc Miêu H5 trên Linux: aaPanel, môi trường, firewall, upload & giải nén, MongoDB, backend API, khởi động server, chat server, URL rewrite.">
+<meta name="theme-color" content="#22c55e">
+<style>
+  :root{
+    --bg:#0f1117; --panel:#141a24; --card:#192233;
+    --text:#e6eaf2; --muted:#9aa4b2; --border:#263043;
+    --accent:#22d3ee; --accent2:#60a5fa; --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444; --code:#0a101d;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Be Vietnam Pro","Noto Sans",sans-serif}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .container{max-width:1100px;margin:0 auto;padding:24px}
+  .banner{border:1px solid var(--border);background:linear-gradient(135deg,#0b1322,#0f1b31 60%,#0b1322);padding:18px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35);margin-bottom:22px}
+  .banner h1{margin:0;font-size:26px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+  .pill{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:10px 14px;min-width:0}
+  .pill a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  @media (max-width: 720px){ .grid{grid-template-columns:1fr} }
+  .section{border:1px solid var(--border);background:var(--panel);border-radius:16px;margin:18px 0;overflow:hidden}
+  .sec-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+  .sec-hd h2{margin:0;font-size:18px}
+  .sec-bd{padding:14px 16px}
+  .kvs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  @media (max-width:720px){ .kvs{grid-template-columns:1fr} }
+  .kv{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px}
+  .kv .k{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+  .kv .v{font-weight:600}
+  .list{margin:0;padding-left:18px;line-height:1.65}
+  .note{color:var(--warn)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin:10px 0}
+  pre{margin:0;background:var(--code);border:1px solid var(--border);border-radius:10px;overflow:auto}
+  code{display:block;padding:10px 12px;line-height:1.4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;color:#c7e0ff;white-space:pre;word-wrap:normal;overflow-x:auto}
+  .cmd{position:relative;margin:10px 0}
+  .copy{position:absolute;top:8px;right:8px;font-size:12px;border:1px solid var(--border);background:var(--panel);color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer}
+  .copy:hover{background:#20283a}
+  .imgbox{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px}
+  .imgbox img{max-width:100%;border-radius:8px;display:block;margin:0 auto}
+  .footer{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header class="banner">
+      <h1>🎮 Tam Quốc Miêu H5 – Hướng dẫn cài đặt trên Linux (Cập nhật)</h1>
+      <div class="grid">
+        <div class="pill">🌐 WEBSITE: <a href="https://loliteam.net/" target="_blank" rel="noopener">https://loliteam.net/</a></div>
+        <div class="pill">📢 TELEGRAM: <a href="https://t.me/NhieKute" target="_blank" rel="noopener">https://t.me/NhieKute</a></div>
+        <div class="pill">📘 FACEBOOK: <a href="https://www.facebook.com/Thuong.EoPi" target="_blank" rel="noopener">/Thuong.EoPi</a></div>
+        <div class="pill">👨‍💻 Phát triển: <strong>Eopi Noriko</strong> • LoLi Team</div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="sec-hd"><h2>Thông tin hệ thống</h2></div>
+      <div class="sec-bd kvs">
+        <div class="kv"><div class="k">Hệ điều hành</div><div class="v">CentOS 7.9</div></div>
+        <div class="kv"><div class="k">Demo IP</div><div class="v">36.50.134.243</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>🔧 Cài đặt aaPanel 7</h2></div>
+      <div class="sec-bd">
+        <p>Chạy lệnh (một dòng):</p>
+        <div class="cmd">
+          <button class="copy" data-target="cmd-aapanel">Sao chép</button>
+          <pre><code id="cmd-aapanel">URL=https://loliteam.net/install_7.0_en_pro.sh && if [ -f /usr/bin/curl ];then curl -ksSO "$URL" ;else wget --no-check-certificate -O install_7.0_en_pro.sh "$URL";fi;bash install_7.0_en_pro.sh aapanel</code></pre>
+        </div>
+        <p class="note">Khi được hỏi xác nhận, nhập <code>y</code> (chữ thường) rồi Enter.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>🛠️ Cài đặt môi trường</h2></div>
+      <div class="sec-bd">
+        <ul class="list">
+          <li>Nginx 1.22</li>
+          <li>MySQL 5.6</li>
+          <li>PHP 7.4 — cài extension: <b>ionCube</b>, <b>memcache</b>, <b>php_mongodb</b> → Reload config → Restart PHP</li>
+          <li>Docker engine</li>
+          <li>Elasticsearch</li>
+          <li>Linux Toolbox — <i>Setting → Swap/Virtual memory: 5120</i> (tùy cấu hình)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>🔓 Mở port Firewall</h2></div>
+      <div class="sec-bd">
+        <p>Cần mở các port: <b>80, 82, 8192, 8193, 9200, 10001, 10002</b></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>📦 Upload &amp; giải nén server</h2></div>
+      <div class="sec-bd">
+        <div class="card">Upload file <code>Server-MeoMeo-Eopi-Web.zip</code> vào thư mục gốc <code>/</code>.</div>
+        <div class="cmd"><button class="copy" data-target="cmd-unzip">Sao chép</button><pre><code id="cmd-unzip">cd / && unzip Server-MeoMeo-Eopi-Web.zip</code></pre></div>
+        <p class="note">Đảm bảo Nginx đã được cài thành công trước khi giải nén.</p>
+        <div class="card">Sửa file cấu hình: <code>/www/server/panel/vhost/nginx/127.0.0.1.conf</code><br>→ Thay <code>meomeo.jx2jaya.com</code> bằng IP hoặc domain của bạn.</div>
+        <div class="cmd"><button class="copy" data-target="cmd-nginx">Sao chép</button><pre><code id="cmd-nginx">/etc/init.d/nginx restart</code></pre></div>
+        <div class="cmd"><button class="copy" data-target="cmd-chmod1">Sao chép</button><pre><code id="cmd-chmod1">chmod -R 777 /data</code></pre></div>
+        <div class="cmd"><button class="copy" data-target="cmd-chmod2">Sao chép</button><pre><code id="cmd-chmod2">chmod -R 777 /www/wwwroot/web</code></pre></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>📝 Sửa IP server</h2></div>
+      <div class="sec-bd">
+        <p>Thay IP <code>36.50.134.243</code> trong các file:</p>
+        <ul class="list">
+          <li>/data/sql/cat_center.sql</li>
+          <li>/data/sql/game_admin.sql</li>
+          <li>/www/wwwroot/web/api/config.php</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>🌍 Cấu hình domain</h2></div>
+      <div class="sec-bd">
+        <div class="card">File: <code>/www/wwwroot/web/game/main/play.php</code><br>→ Tìm &amp; thay tất cả <code>playmeo.jx2jaya.com</code> bằng domain của bạn.</div>
+        <ul class="list">
+          <li>aaPanel → Website → Add site</li>
+          <li>Domain: nhập domain</li>
+          <li>Website Path: <code>/www/wwwroot/web</code></li>
+        </ul>
+        <div class="card">
+          <div><b>URL rewrite</b> — thêm nội dung sau vào cấu hình site của bạn:</div>
+          <div class="cmd">
+            <button class="copy" data-target="cmd-rewrite">Sao chép</button>
+            <pre><code id="cmd-rewrite">location /client/ { try_files $uri $uri/client /client/index.php; }</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>💾 Database</h2></div>
+      <div class="sec-bd">
+        <div class="card">Đổi mật khẩu DB thành: <code>123456</code></div>
+        <div class="cmd"><button class="copy" data-target="cmd-db">Sao chép</button><pre><code id="cmd-db">cd /data/sql && ./add-dtb.sh</code></pre></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>🍃 Cài MongoDB</h2></div>
+      <div class="sec-bd">
+        <ol class="list">
+          <li>Docker → Local image → Import image → Path: <code>/data/3qmeomeo-mongo40-eopi.tar</code> → Confirm</li>
+          <li>Docker → Container → Create Container → Command create → Dán lệnh sau (1 dòng):
+            <div class="cmd"><button class="copy" data-target="cmd-docker">Sao chép</button><pre><code id="cmd-docker">docker run -d --name mongo40 -p 127.0.0.1:27017:27017 -v /data/mongo40:/data/db mongo:4.0.28 --bind_ip_all</code></pre></div>
+            Execute command
+          </li>
+          <li>Kiểm tra container:
+            <div class="cmd"><button class="copy" data-target="cmd-netstat">Sao chép</button><pre><code id="cmd-netstat">netstat -tulpn</code></pre></div>
+            Nếu thấy port <code>27017</code> đang chạy → OK
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>⚙️ Sửa Backend API</h2></div>
+      <div class="sec-bd">
+        <ul class="list">
+          <li>Software Store → elasticsearch → <b>权限</b><br>→ Copy mật khẩu <b>管理员密码</b> vào: <code>/data/gmhoutai/gameadmin/.env</code> (dòng <b>56</b>).</li>
+          <li>Software Store → elasticsearch → <b>配置文件</b><br>→ Tìm: <code>xpack.security.http.ssl:</code> → Đổi <code>enabled: true</code> → <code>enabled: false</code> → Save.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>🚀 Khởi động / Dừng server</h2></div>
+      <div class="sec-bd">
+        <div class="cmd"><button class="copy" data-target="cmd-start1">Sao chép</button><pre><code id="cmd-start1">cd /data/server/bin && ./run.sh</code></pre></div>
+        <div class="cmd"><button class="copy" data-target="cmd-start2">Sao chép</button><pre><code id="cmd-start2">cd /data/cross/bin && ./run.sh</code></pre></div>
+        <div class="cmd"><button class="copy" data-target="cmd-check">Sao chép</button><pre><code id="cmd-check">netstat -lntp</code></pre></div>
+        <div class="cmd"><button class="copy" data-target="cmd-stop1">Sao chép</button><pre><code id="cmd-stop1">cd /data/server/bin && ./stop.sh</code></pre></div>
+        <div class="cmd"><button class="copy" data-target="cmd-stop2">Sao chép</button><pre><code id="cmd-stop2">cd /data/cross/bin && ./stop.sh</code></pre></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>💬 Cài chat server trên website (tuỳ chọn)</h2></div>
+      <div class="sec-bd">
+        <ol class="list">
+          <li>Vào <b>App Store</b> cài <b>Node.js version manager 2.2</b>, sau đó trong manager cài <b>v14.17.6</b>.</li>
+          <li>Vào <b>Website → Node Project → Add Node project</b>.</li>
+          <li>Làm theo hình dưới, sau đó <b>Save</b>:</li>
+        </ol>
+        <div class="imgbox" style="margin-top:10px">
+          <img src="https://i.postimg.cc/HWNJjrYY/cai-node-chat.png" alt="Hướng dẫn cài Node chat server">
+        </div>
+        <p class="note">Tuỳ chọn này không ảnh hưởng game — website vẫn hoạt động nếu không cài chat server.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-hd"><h2>🎮 Đường dẫn game &amp; backend</h2></div>
+      <div class="sec-bd">
+        <ul class="list">
+          <li>Vào game: <code>http://tenmien</code> hoặc <code>http://IP</code></li>
+          <li>Tài khoản admin mặc định trong game — User: <b>admin</b>, Pass: <b>thuong</b></li>
+          <li>Admin Backend: <code>http://IP:82/module/login.php</code> — Tài khoản: <b>admin</b> — Mật khẩu: <b>123456</b></li>
+          <li>Trang lấy danh sách vật phẩm: <code>http://tenmien/vatpham</code></li>
+          <li>⚔️ Bật đấu trường &amp; liên server: đăng nhập Admin backend → menu trái → chỉnh thời gian mở server → Set!</li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="footer">© LoLi Team • Biên soạn bởi Eopi Noriko</p>
+  </div>
+
+<script>
+  // Copy-to-clipboard for command blocks
+  document.querySelectorAll('.copy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-target');
+      const el = document.getElementById(id);
+      if(!el) return;
+      const text = el.innerText;
+      navigator.clipboard.writeText(text).then(()=>{
+        const old = btn.textContent;
+        btn.textContent = 'Đã sao chép';
+        btn.style.borderColor = 'var(--ok)';
+        setTimeout(()=>{ btn.textContent = 'Sao chép'; btn.style.borderColor = 'var(--border)'; }, 1200);
+      }).catch(()=>{
+        btn.textContent = 'Lỗi copy';
+        btn.style.borderColor = 'var(--danger)';
+        setTimeout(()=>{ btn.textContent = 'Sao chép'; btn.style.borderColor = 'var(--border)'; }, 1200);
+      });
+    });
+  });
+</script>
+</body>
+</html>
