@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tam Quốc Miêu H5 – Hướng dẫn cài đặt trên Linux (bản cập nhật)</title>
+<title>Tam Quốc Miêu H5 – Hướng dẫn cài đặt trên Linux (bản cập nhật 2.3.1)</title>
 <meta name="description" content="Hướng dẫn cài Tam Quốc Miêu H5 trên Linux: aaPanel, môi trường, firewall, upload & giải nén, MongoDB, backend API, khởi động server, chat server, URL rewrite.">
 <meta name="theme-color" content="#22c55e">
 <style>
@@ -67,7 +67,7 @@
     <section class="section">
       <div class="sec-hd"><h2>🔧 Cài đặt aaPanel 7</h2></div>
       <div class="sec-bd">
-        <p>Chạy lệnh (một dòng):</p>
+        <p>Chạy lệnh:</p>
         <div class="cmd">
           <button class="copy" data-target="cmd-aapanel">Sao chép</button>
           <pre><code id="cmd-aapanel">URL=https://loliteam.net/install_7.0_en_pro.sh && if [ -f /usr/bin/curl ];then curl -ksSO "$URL" ;else wget --no-check-certificate -O install_7.0_en_pro.sh "$URL";fi;bash install_7.0_en_pro.sh aapanel</code></pre>
@@ -154,7 +154,7 @@
       <div class="sec-bd">
         <ol class="list">
           <li>Docker → Local image → Import image → Path: <code>/data/3qmeomeo-mongo40-eopi.tar</code> → Confirm</li>
-          <li>Docker → Container → Create Container → Command create → Dán lệnh sau (1 dòng):
+          <li>Docker → Container → Create Container → Command create → Dán lệnh sau:
             <div class="cmd"><button class="copy" data-target="cmd-docker">Sao chép</button><pre><code id="cmd-docker">docker run -d --name mongo40 -p 127.0.0.1:27017:27017 -v /data/mongo40:/data/db mongo:4.0.28 --bind_ip_all</code></pre></div>
             Execute command
           </li>
