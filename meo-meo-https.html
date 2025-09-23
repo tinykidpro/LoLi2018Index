@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meo Meo 3Q WSS SNIPPET Maker</title>
+<meta name="theme-color" content="#22c55e">
+<style>
+  :root{--bg:#0f1117;--card:#161c25;--text:#e6eaf2;--muted:#9aa4b2;--b:#273142;--ok:#22c55e;--code:#0a101d}
+  *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+  .wrap{max-width:860px;margin:0 auto;padding:18px}
+  h1{margin:0 0 10px 0;font-size:18px;font-weight:700}
+  .card{background:var(--card);border:1px solid var(--b);border-radius:12px;padding:12px;margin:10px 0}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media(max-width:720px){.row{grid-template-columns:1fr}}
+  label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+  input{width:100%;background:#121722;border:1px solid var(--b);border-radius:10px;color:var(--text);padding:9px 11px;font-size:14px;outline:none}
+  .routes{margin-top:6px}
+  .route{display:grid;grid-template-columns:130px 1fr auto;gap:8px;align-items:end;margin-bottom:6px}
+  .btn{border:1px solid var(--b);background:#121722;color:var(--text);padding:7px 11px;border-radius:10px;cursor:pointer;font-size:13px}
+  .btn:hover{background:#1a2535}
+  .bar{display:flex;gap:8px;flex-wrap:wrap}
+  pre{margin:0;background:var(--code);border:1px solid var(--b);border-radius:10px;overflow:auto}
+  code{display:block;padding:10px;line-height:1.45;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;color:#c7e0ff;white-space:pre}
+  .ok{color:var(--ok);font-size:12px;margin-left:6px;display:none}
+  .urls{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+  .url{background:#121722;border:1px solid var(--b);border-radius:10px;padding:8px 10px;font-size:13px;overflow:auto}
+  .muted{color:var(--muted);font-size:12px;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🧩 Meo Meo 3Q WSS SNIPPET Maker</h1>
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label>Domain (chỉ dùng cho dòng Origin comment)</label>
+        <input id="domain" type="text" value="wss.lozygame.com">
+      </div>
+      <div>
+        <label>Prefix</label>
+        <input id="prefix" type="text" value="/wss">
+      </div>
+    </div>
+    <div class="routes">
+      <label style="margin-top:8px;color:var(--muted);font-size:12px">Route (tên → port)</label>
+      <div id="routes"></div>
+      <button id="add" class="btn" type="button" style="margin-top:6px">+ Thêm route</button>
+      <input id="file" type="file" accept=".conf,.txt" style="display:none">
+      <button id="import" class="btn" type="button" style="margin-top:6px">⤴️ Nhập từ .conf</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="bar">
+      <button class="btn" id="gen" type="button">Tạo SNIPPET</button>
+      <button class="btn" id="copy" type="button">Sao chép</button><span id="copied" class="ok">Đã sao chép!</span>
+      <button class="btn" id="download" type="button">Tải snippet .conf</button>
+      <button class="btn" id="share" type="button">Tạo link</button><a id="sharelink" class="btn" href="#" target="_blank" rel="noopener" style="display:none">Mở link</a>
+    </div>
+    <div style="margin-top:8px">
+      <pre><code id="out"># Nhấn "Tạo SNIPPET"…</code></pre>
+    </div>
+
+    <div id="urlsWrap" style="margin-top:10px;display:none">
+      <div class="muted">URL WSS sinh ra (bấm để copy nhanh):</div>
+      <div id="urls" class="card" style="padding:10px"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const routesEl = document.getElementById('routes');
+const addBtn   = document.getElementById('add');
+const genBtn   = document.getElementById('gen');
+const copyBtn  = document.getElementById('copy');
+const dlBtn    = document.getElementById('download');
+const shareBtn = document.getElementById('share');
+const shareLink= document.getElementById('sharelink');
+const out      = document.getElementById('out');
+const copied   = document.getElementById('copied');
+const domainEl = document.getElementById('domain');
+const prefixEl = document.getElementById('prefix');
+const urlsWrap = document.getElementById('urlsWrap');
+const urlsEl   = document.getElementById('urls');
+const fileEl   = document.getElementById('file');
+const importBtn= document.getElementById('import');
+
+function mkRouteRow(name='', port=''){
+  const wrap = document.createElement('div');
+  wrap.className = 'route';
+  wrap.innerHTML = `
+    <input type="text" class="rname" placeholder="s1" value="${name}">
+    <input type="number" class="rport" placeholder="8192" value="${port}">
+    <button class="btn del" type="button">Xóa</button>
+  `;
+  wrap.querySelector('.del').addEventListener('click', ()=> wrap.remove());
+  routesEl.appendChild(wrap);
+}
+
+function sanitizeName(s){ return (s||'').trim().replace(/[^A-Za-z0-9_-]/g,''); }
+function sanitizePort(p){ const n=parseInt(p,10); return (Number.isFinite(n)&&n>0&&n<65536)?String(n):''; }
+function cleanPrefix(pfx){ let p=(pfx||'').trim(); if(!p.startsWith('/')) p='/'+p; return p.replace(/\/+$/,'')||'/wss'; }
+
+function gen(){
+  const domain = (domainEl.value||'').trim() || 'wss.lozygame.com';
+  const pfx = cleanPrefix(prefixEl.value||'/wss');
+  const rows = Array.from(routesEl.querySelectorAll('.route')).map(r=>{
+    return { name: sanitizeName(r.querySelector('.rname').value), port: sanitizePort(r.querySelector('.rport').value) };
+  }).filter(x=>x.name && x.port);
+
+  if (rows.length===0){ out.textContent = '# Chưa có route hợp lệ. Thêm s1→8192, s2→8193...'; urlsWrap.style.display='none'; return; }
+
+  let lines = [];
+  lines.push('    # -- HỖ TRỢ WEBSOCKET (HTTP Upgrade) --');
+  lines.push('    set $connection_upgrade "";');
+  lines.push('    if ($http_upgrade != "") { set $connection_upgrade "upgrade"; }');
+  lines.push('');
+  lines.push('');
+  lines.push('    # ==========================');
+  lines.push('    #   WEBSOCKET THEO PATH');
+  rows.forEach(r=> lines.push(`    #   ${pfx}/${r.name} -> 127.0.0.1:${r.port}`));
+  lines.push('    # ==========================');
+  rows.forEach(r=> lines.push(`    location = ${pfx}/${r.name} { return 301 https://$host${pfx}/${r.name}/; }`));
+  lines.push('');
+  rows.forEach(r=>{
+    lines.push(`    location ${pfx}/${r.name}/ {`);
+    lines.push(`        proxy_pass http://127.0.0.1:${r.port}/;`);
+    lines.push(`        proxy_http_version 1.1;`);
+    lines.push(`        proxy_set_header Upgrade $http_upgrade;`);
+    lines.push(`        proxy_set_header Connection $connection_upgrade;`);
+    lines.push(`        proxy_set_header Host $host;`);
+    lines.push(`        proxy_read_timeout 600s;`);
+    lines.push(`        proxy_send_timeout 600s;`);
+    lines.push(`        # proxy_set_header Origin https://${domain};`);
+    lines.push(`    }`);
+    lines.push('');
+  });
+
+  out.textContent = lines.join('\n');
+
+  // URLs
+  urlsEl.innerHTML = '';
+  rows.forEach(r=>{
+    const url = `https://${domain}${pfx}/${r.name}/`;
+    const row = document.createElement('div');
+    row.className = 'urls';
+    row.innerHTML = `<div class="url">${url}</div><button class="btn copyurl" type="button" data-url="${url}">Copy</button>`;
+    urlsEl.appendChild(row);
+  });
+  urlsWrap.style.display = 'block';
+  urlsEl.querySelectorAll('.copyurl').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      navigator.clipboard.writeText(btn.getAttribute('data-url')||'').then(()=>{
+        btn.textContent = 'Đã copy'; setTimeout(()=>btn.textContent='Copy',900);
+      });
+    });
+  });
+}
+
+function copyOut(){
+  const text = out.textContent;
+  if(!text.trim()) return;
+  navigator.clipboard.writeText(text).then(()=>{
+    copied.style.display='inline'; setTimeout(()=>copied.style.display='none',1100);
+  });
+}
+function downloadSnippet(){
+  const text = out.textContent||'';
+  if(!text.trim()){ alert('Chưa có nội dung để tải. Nhấn "Tạo SNIPPET" trước.'); return; }
+  const domain = (domainEl.value||'wss-snippet').replace(/[^A-Za-z0-9._-]/g,'-');
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${domain}-wss-snippet.conf`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 80);
+}
+function makeShareLink(){
+  const spfx = cleanPrefix(prefixEl.value||'/wss');
+  const dom  = (domainEl.value||'').trim();
+  const rows = Array.from(routesEl.querySelectorAll('.route')).map(r=>{
+    return { n: sanitizeName(r.querySelector('.rname').value), p: sanitizePort(r.querySelector('.rport').value) };
+  }).filter(x=>x.n && x.p);
+  const qs = new URL(window.location.href);
+  if (dom) qs.searchParams.set('domain', dom); else qs.searchParams.delete('domain');
+  qs.searchParams.set('prefix', spfx);
+  qs.searchParams.set('routes', rows.map(x=>`${encodeURIComponent(x.n)}:${encodeURIComponent(x.p)}`).join(','));
+  shareLink.href = qs.toString();
+  shareLink.style.display='inline-block';
+}
+
+/* ===== Import from .conf ===== */
+function parseFromConf(text){
+  if(!text) return;
+
+  // Try to get domain from any "Origin https://domain" line (commented or not)
+  let dom = '';
+  const domMatch = text.match(/Origin\s+https?:\/\/([^;\s]+)/i);
+  if (domMatch) dom = domMatch[1];
+  if (dom) domainEl.value = dom;
+
+  // Try to get prefix + routes from comment map lines first: "#   /wss/s1 -> 127.0.0.1:8192"
+  const mapRe = /^\s*#\s*\/?([\/][^ \t]+)\s*->\s*127\.0\.0\.1:(\d+)/gmi;
+  let m, pairs = [];
+  while ((m = mapRe.exec(text)) !== null){
+    const path = m[1].trim(); // e.g. /wss/s1
+    const port = m[2].trim();
+    const lastSlash = path.lastIndexOf('/');
+    if (lastSlash > 0){
+      const prefix = path.slice(0, lastSlash); // /wss
+      const name = path.slice(lastSlash+1); // s1
+      pairs.push({prefix, name, port});
+    }
+  }
+
+  // If not found via comments, parse from "location /wss/s1/ { ... proxy_pass http://127.0.0.1:8192/; }"
+  if (pairs.length === 0){
+    const locRe = /location\s+(?:=)?\s*(\/[^ \{;]+)\/\s*\{[\s\S]*?proxy_pass\s+http:\/\/127\.0\.0\.1:(\d+)/gmi;
+    while ((m = locRe.exec(text)) !== null){
+      const path = m[1].trim(); // /wss/s1
+      const port = m[2].trim();
+      const lastSlash = path.lastIndexOf('/');
+      if (lastSlash > 0){
+        const prefix = path.slice(0, lastSlash);
+        const name = path.slice(lastSlash+1);
+        pairs.push({prefix, name, port});
+      }
+    }
+  }
+
+  if (pairs.length === 0){ alert('Không tìm thấy route nào trong file.'); return; }
+
+  // Use the first prefix
+  const pfx = pairs[0].prefix || '/wss';
+  prefixEl.value = pfx;
+
+  // Fill routes
+  routesEl.innerHTML = '';
+  pairs.forEach(pr => {
+    mkRouteRow(pr.name, pr.port);
+  });
+
+  // Generate preview
+  gen();
+}
+
+importBtn.addEventListener('click', ()=> fileEl.click());
+fileEl.addEventListener('change', (e)=>{
+  const f = e.target.files && e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = (ev)=> parseFromConf(String(ev.target.result||''));
+  reader.readAsText(f);
+});
+
+function parseQS(){
+  const sp = new URLSearchParams(window.location.search);
+  const domain = sp.get('domain') || 'wss.lozygame.com';
+  const prefix = sp.get('prefix') || '/wss';
+  const routes = sp.get('routes') || 's1:8192,s2:8193'; // mặc định có s1/s2
+  domainEl.value = domain; prefixEl.value = prefix;
+  routesEl.innerHTML = '';
+  (routes||'').split(',').forEach(pair=>{
+    const [n,p] = pair.split(':');
+    if(n&&p) mkRouteRow(n,p);
+  });
+  if (routesEl.children.length===0){ mkRouteRow('s1','8192'); mkRouteRow('s2','8193'); }
+  gen();
+}
+
+addBtn.addEventListener('click', ()=> mkRouteRow());
+genBtn.addEventListener('click', gen);
+copyBtn.addEventListener('click', copyOut);
+dlBtn.addEventListener('click', downloadSnippet);
+shareBtn.addEventListener('click', makeShareLink);
+
+parseQS();
+</script>
+</body>
+</html>
