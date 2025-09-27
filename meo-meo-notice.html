@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meo Meo Notice Maker</title>
+<style>
+  :root{--bg:#0f1117;--card:#161c25;--text:#e6eaf2;--muted:#9aa4b2;--b:#273142}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Helvetica Neue,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1200px;margin:0 auto;padding:18px}
+  h1{margin:0 0 10px;font-size:18px;font-weight:700}
+  .card{background:var(--card);border:1px solid var(--b);border-radius:12px;padding:12px;margin:10px 0}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .btn{border:1px solid var(--b);background:#121722;color:var(--text);padding:7px 11px;border-radius:10px;cursor:pointer;font-size:13px}
+  .btn:hover{background:#1a2535}
+  select,input[type=color]{background:#121722;border:1px solid var(--b);border-radius:10px;color:var(--text);padding:6px 8px;font-size:13px}
+  input[type=color]{width:42px;height:34px;padding:0}
+  #editor{min-height:300px;background:#fff;border:1px solid var(--b);border-radius:10px;padding:10px;line-height:1.5;color:rgb(107,89,84);font-size:14px}
+  #editor:focus{outline:none}
+  textarea{width:100%;min-height:160px;background:#0a101d;color:#c7e0ff;border:1px solid var(--b);border-radius:10px;padding:10px;font-family:monospace;font-size:13px;margin-top:10px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .canvas{position:relative;width:580px;margin:0 auto;border-radius:12px;overflow:hidden;border:1px solid var(--b);background:#000}
+  .canvas .bg{width:100%;display:block;opacity:0.9}
+  .canvas .overlay{position:absolute;left:0;right:0;top:0;padding:310px 46px 24px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:rgb(107,89,84);text-shadow:0 1px 2px rgba(0,0,0,.5)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📝 Meo Meo Notice Maker</h1>
+  <div class="grid">
+    <!-- Bên trái -->
+    <div>
+      <div class="card">
+        <div class="bar">
+          <button class="btn" onclick="exec('bold')"><b>Đậm</b></button>
+          <button class="btn" onclick="exec('italic')"><i>Nghiêng</i></button>
+          <label class="btn">Màu <input type="color" id="color" value="#6b5954" onchange="applyColor(this.value)"></label>
+          <select id="iconSel">
+            <option value="">+ Thêm icon</option>
+            <option value="✔:#228B22">✔ Tick xanh</option>
+            <option value="➤:#0066cc">➤ Mũi tên xanh</option>
+            <option value="✉:#008b8b">✉ Thư</option>
+            <option value="★:#b22222">★ Sao đỏ</option>
+            <option value="☎:#22c55e">☎ Điện thoại</option>
+            <option value="♻:#00cc66">♻ Tái chế</option>
+            <option value="⚠:#ffcc00">⚠ Cảnh báo</option>
+            <option value="💎:#00ffff">💎 Kim cương</option>
+          </select>
+          <button class="btn" onclick="insertBr()">+ Xuống dòng</button>
+          <button class="btn" onclick="toOutput()">Xuất HTML</button>
+          <button class="btn" onclick="copyOut()">Sao chép HTML</button>
+        </div>
+        <div id="editor" contenteditable="true">
+<font color="#b22222">
+  <b>[★] SERVER 3Q MEO MEO – H5 – MOBILE [★]</b>
+</font>
+<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>Đã FIX</b>&nbsp;lỗi bị tắt server từ xa (ko phải ai thích tắt là tắt)<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>KHÔNG</b>&nbsp;bị lỗi mất kết nối đến máy chủ<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>KHÔNG</b>&nbsp;bị lỗi treo đăng nhập<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>KHÔNG</b>&nbsp;kẹt loading 100%<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>KHÔNG</b>&nbsp;ngốn RAM – Test thực tế 2GS/8GB RAM<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>FIX</b>&nbsp;lỗi up level tướng mới<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>FIX</b>&nbsp;lỗi tạo account KHÔNG cần mật khẩu<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>Update FULL</b>&nbsp;tướng giống bản SOHA<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>Hướng dẫn</b>&nbsp;cài game, cấu hình liên server, mở thêm server<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>Hướng dẫn</b>&nbsp;cấu hình bảo mật, Anti DDoS<br>
+[<font color="#228B22">✔</font>]&nbsp;<b>Hỗ trợ</b>&nbsp;cài đặt game lên máy chủ<br>
+<br>
+[<font color="#0066cc">➤</font>]&nbsp;<font color="#0066cc"><b>Link test bản bán tool GM:</b></font><br>
+<font color="#228B22"><b>https://meomeo.jx2jaya.com/</b></font><br>
+<font color="#cc6600"><b>Giá:</b>&nbsp;1.000.000 VNĐ</font><br>
+<br>
+[<font color="#0066cc">➤</font>]&nbsp;<font color="#0066cc"><b>Link test bản đầy đủ web:</b></font><br>
+<font color="#228B22"><b>https://playmeo.jx2jaya.com/</b></font><br>
+<font color="#cc6600"><b>Giá:</b>&nbsp;2.000.000 VNĐ</font><br>
+<br>
+[<font color="#008b8b">✉</font>]&nbsp;<font color="#008b8b">Anh em quan tâm inbox:&nbsp;<b><font color="#b22222">https://t.me/NhieKute</font></b></font>
+        </div>
+      </div>
+      <div class="card">
+        <label style="color:var(--muted);font-size:12px">Kết quả HTML:</label>
+        <textarea id="out" readonly></textarea>
+      </div>
+    </div>
+    <!-- Bên phải -->
+    <div class="card">
+      <div class="canvas">
+        <img class="bg" src="bg.png" alt="Background">
+        <div id="preview" class="overlay"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function exec(cmd){ document.execCommand(cmd,false,null); }
+function applyColor(c){ document.execCommand('foreColor',false,c); }
+document.getElementById('iconSel').addEventListener('change', e=>{
+  const v=e.target.value;if(!v)return;
+  const [ch,color]=v.split(':');
+  document.execCommand('insertHTML',false,`[<font color="${color}">${ch}</font>]&nbsp;`);
+  e.target.value='';
+});
+function insertBr(){ document.execCommand('insertHTML',false,'<br>'); }
+function normalize(html){
+  html=html.replace(/<\/div>\s*/gi,'<br>').replace(/<div[^>]*>/gi,'');
+  html=html.replace(/<\/p>\s*/gi,'<br>').replace(/<p[^>]*>/gi,'');
+  html=html.replace(/<\/span>/gi,'</font>');
+  return html.trim();
+}
+function toOutput(){
+  const raw=document.getElementById('editor').innerHTML;
+  const html=normalize(raw);
+  document.getElementById('out').value=html;
+  document.getElementById('preview').innerHTML=html;
+}
+function copyOut(){
+  const ta=document.getElementById('out');ta.select();document.execCommand('copy');
+}
+toOutput();
+</script>
+</body>
+</html>
