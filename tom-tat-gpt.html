@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompt Builder – Bài giảng Django (VN)</title>
+  <style>
+    /* ===== Design Tokens ===== */
+    :root{
+      --bg: #0b1220;            /* page bg */
+      --panel: #0e1a2f;         /* panel bg */
+      --card: #111d35;          /* card bg */
+      --muted: #8aa0b5;         /* secondary text */
+      --text: #eaf2ff;          /* primary text */
+      --border: #22314d;        /* borders */
+      --accent: #8ab4ff;        /* primary accent */
+      --accent-2: #5ce1e6;      /* secondary accent */
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --ring: 0 0 0 3px rgba(138,180,255,.25);
+    }
+
+    /* ===== Base ===== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(700px 400px at 15% -10%, rgba(92,225,230,.12), transparent 60%),
+        radial-gradient(900px 500px at 110% 10%, rgba(138,180,255,.10), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    ::selection{background:rgba(138,180,255,.25)}
+
+    /* ===== Header ===== */
+    header{
+      padding:28px 20px 16px;
+      text-align:center;
+    }
+    .title{
+      margin:0;
+      font-size: clamp(22px, 2.4vw, 30px);
+      letter-spacing:.2px;
+      background:linear-gradient(92deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .subtitle{margin:8px 0 0;color:var(--muted)}
+
+    /* ===== Layout ===== */
+    .container{
+      max-width: 1180px;
+      margin: 16px auto 40px;
+      padding: 0 20px;
+      display:grid; gap:18px; grid-template-columns:1fr; align-items:start;
+    }
+    @media(min-width: 980px){ .container{ grid-template-columns: 1.05fr .95fr; } }
+
+    /* ===== Card ===== */
+    .card{
+      position:relative;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+      overflow:hidden;
+    }
+    .card::before{
+      content:""; position:absolute; inset:-2px; pointer-events:none;
+      background:
+        radial-gradient(400px 120px at 10% -10%, rgba(138,180,255,.10), transparent 40%),
+        radial-gradient(300px 120px at 110% 0%, rgba(92,225,230,.08), transparent 50%);
+      mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      padding:1px; border-radius: inherit;
+    }
+    .card h2{margin:0 0 10px;font-size:16px;letter-spacing:.3px;color:#dbe8ff}
+
+    /* ===== Form ===== */
+    label{display:block;margin:12px 0 6px;color:#cfe0ff;font-size:13px}
+    input[type="text"], textarea{
+      width:100%; color:var(--text); background:#0f1725;
+      border:1px solid var(--border); border-radius: var(--radius-sm);
+      padding:11px 12px; font-size:14px; outline:none; transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    textarea{min-height:140px; line-height:1.5; resize: vertical;}
+    input::placeholder, textarea::placeholder{color:#7f93ab}
+    input:focus, textarea:focus{ border-color:#3763b3; box-shadow: var(--ring); }
+
+    /* Combine inputs visually in groups */
+    .input-group{ display:grid; grid-template-columns: 1fr; gap:8px; }
+
+    /* ===== Buttons ===== */
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+    .btn{
+      --bg: #233a64; --bg2:#1e2f52; --bd:#2a4271; --txt:#eaf2ff;
+      border:1px solid var(--bd); background: linear-gradient(180deg, var(--bg), var(--bg2)); color:var(--txt);
+      padding:10px 14px; border-radius: 12px; font-weight:700; letter-spacing:.2px; cursor:pointer;
+      transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover{ filter:brightness(1.08) }
+    .btn:active{ transform: translateY(1px) }
+    .btn.primary{ --bg:#315ca8; --bg2:#274c8b; --bd:#365c9a; }
+    .btn.ghost{ background:transparent; border-color:var(--border); font-weight:600 }
+    .btn.success{ --bg:#2c7a7b; --bg2:#246768; --bd:#2c7a7b; }
+
+    /* ===== Output Notepad ===== */
+    #output{ height: 560px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    .copy{ position:absolute; right:12px; top:12px; }
+
+    /* Nice scrollbars */
+    textarea::-webkit-scrollbar{ width:10px }
+    textarea::-webkit-scrollbar-thumb{ background:#1e2b45; border-radius:10px; border:2px solid #0f1725 }
+    textarea::-webkit-scrollbar-thumb:hover{ background:#24385d }
+
+    /* Tiny helper text */
+    .hint{ color:var(--muted); font-size:12px; margin-top:6px }
+
+    /* Footer */
+    footer{ text-align:center; color:var(--muted); font-size:12px; padding: 10px 0 30px }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="title">Prompt Builder – Soạn bài giảng Django</h1>
+  </header>
+
+  <main class="container">
+    <!-- FORM -->
+    <section class="card">
+      <h2>Thông tin đầu vào</h2>
+
+      <div class="input-group">
+        <label for="khoaHoc">Tiêu đề khóa học</label>
+        <input id="khoaHoc" type="text" placeholder="Ví dụ: Django Level 3" />
+      </div>
+
+      <div class="input-group">
+        <label for="hocPhan">Học phần</label>
+        <input id="hocPhan" type="text" placeholder="Ví dụ: Phần 1: Django Population Script" />
+      </div>
+
+      <div class="input-group">
+        <label for="pyver">Python Version</label>
+        <input id="pyver" type="text" value="3.12" />
+      </div>
+
+      <div class="input-group">
+        <label for="lyThuyet">Ghi chú Lý thuyết</label>
+        <textarea id="lyThuyet" placeholder="- nội dung lý thuyết 1...&#10;- nội dung lý thuyết 2...&#10;- nội dung lý thuyết 3..."></textarea>
+      </div>
+
+      <div class="input-group">
+        <label for="thucHanh">Ghi chú Thực hành</label>
+        <textarea id="thucHanh" placeholder="- nội dung thực hành 1...&#10;- nội dung thực hành 2...&#10;- nội dung thực hành 3..."></textarea>
+      </div>
+
+      <div class="input-group">
+        <label for="demo">Ghi chú Demo nhanh</label>
+        <textarea id="demo" placeholder="- Bước 1: ...&#10;- Bước 2: ...&#10;- Bước 3: ..."></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" onclick="fillSamples()">Chèn mẫu từ ví dụ</button>
+        <button class="btn primary" onclick="generatePrompt()">Tạo Prompt</button>
+        <button class="btn" onclick="clearAll()">Xóa trắng</button>
+      </div>
+
+      <p class="hint">Mẹo: có thể dán danh sách; mỗi dòng sẽ giữ nguyên dấu gạch đầu dòng.</p>
+    </section>
+
+    <!-- OUTPUT -->
+    <section class="card">
+      <h2>Kết quả</h2>
+      <button class="btn success copy" onclick="copyOut()">Sao chép</button>
+      <textarea id="output" readonly placeholder="Kết quả sẽ hiển thị sau khi bạn nhấn Tạo Prompt..."></textarea>
+    </section>
+  </main>
+
+  <footer>
+    Made with ♥ · Thiết kế tối ưu cho việc tạo prompt giảng dạy Django
+  </footer>
+
+<script>
+  function sanitizeMultiline(text){
+    const lines = text.split(/\r?\n/);
+    return lines.map(l=>{ const t=l.trim(); if(!t) return ""; return (/^[-•]/.test(t)? t : "- "+t); }).join("\n");
+  }
+
+  function generatePrompt(){
+    const khoaHoc = document.getElementById('khoaHoc').value.trim() || 'Django Level 3';
+    const hocPhan = document.getElementById('hocPhan').value.trim() || 'Phần 1: Django Population Script';
+    const pyver = document.getElementById('pyver').value.trim() || '3.12';
+
+    let lt = sanitizeMultiline(document.getElementById('lyThuyet').value);
+    let th = sanitizeMultiline(document.getElementById('thucHanh').value);
+    let dm = sanitizeMultiline(document.getElementById('demo').value);
+
+    const thOutput = th || '- Bài này không có phần thực hành';
+    const dmOutput = dm || '- Bài này không có phần demo';
+
+    const prompt = `Hãy viết lại phần tiếp theo của **${khoaHoc}** về nội dung **${hocPhan}** theo đúng thứ tự và chi tiết trong ghi chú bên dưới.  
+Yêu cầu:  
+- Viết theo dạng **bài giảng nói chuyện gần gũi, tự nhiên, có cảm xúc, dễ hiểu**, phù hợp để tôi giảng bài trực tiếp cho sinh viên.  
+- Bố cục rõ ràng, theo format tôi đã gửi ban đầu, gồm phần **lý thuyết** (trước) và **thực hành** (sau).  
+- Phần **lý thuyết** cần trình bày đầy đủ, chi tiết, không được rút gọn — vì đây là phần nền tảng quan trọng của Python Django.  
+- Phần **thực hành** viết theo **dạng step-by-step**, giải thích chi tiết từng bước một, có lời dẫn tự nhiên trước mỗi thao tác.  
+- Phần **mở đầu** cần có **đoạn giới thiệu sinh động, hấp dẫn**, có thể thêm các ghi chú notepad hoặc lời khuyên ngắn nếu cần.  
+- Trong phần **demo**, hãy sử dụng **Python ${pyver}** và chỉnh sửa phần **hiển thị văn bản ra tiếng Việt**, đồng thời đổi **tên biến hoặc hàm sang tiếng Việt không dấu**.  
+- Giữ đúng **thứ tự nội dung** và **bám sát 100% với ghi chú** mà tôi cung cấp.
+
+---
+
+**Nội dung ghi chú bài giảng phần lý thuyết:**
+${lt || '- nội dung lý thuyết 1...\n- nội dung lý thuyết 2...\n- nội dung lý thuyết 3...'}
+
+**Nội dung ghi chú bài giảng phần thực hành:**
+${thOutput}
+
+**Ghi chú nhanh những gì tôi đã demo:**
+${dmOutput}`;
+
+    document.getElementById('output').value = prompt;
+  }
+
+  function clearAll(){
+    ['khoaHoc','hocPhan','lyThuyet','thucHanh','demo'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('pyver').value='3.12';
+    document.getElementById('output').value='';
+  }
+
+  function copyOut(){
+    const out = document.getElementById('output');
+    out.select();
+    out.setSelectionRange(0, out.value.length);
+    document.execCommand('copy');
+    const btns = document.getElementsByClassName('copy');
+    if(btns.length){ const btn = btns[0]; const old=btn.textContent; btn.textContent='Đã sao chép!'; setTimeout(()=>btn.textContent=old, 1200); }
+  }
+
+  function fillSamples(){
+    document.getElementById('khoaHoc').value='Django Level 3';
+    document.getElementById('hocPhan').value='Phần 1: Django Population Script';
+
+    const ltSample = `Xin chào các bạn và chào mừng các bạn đến với Bài giảng Các dạng cơ bản Django cho Django Cấp độ ba.\n\nTrong bài giảng này.\n\nNhững gì chúng tôi sẽ làm là xem xét về mặt khái niệm quá trình tạo một biểu mẫu với Django, vì vậy chúng tôi sẽ không thực sự thực hiện bất kỳ mã hóa nào.`;
+
+    const thSample = `Vì vậy, những gì bạn nói bây giờ là biểu mẫu tương đương với các biểu mẫu mà tên biểu mẫu vượt qua trong bài đăng yêu cầu đó và sau đó bạn muốn kiểm tra xem biểu mẫu có hợp lệ hay không.`;
+
+    const dmSample = `1. mở tập tin first_project\\first_app\\views.py\nThêm from first_app.models import Topic, Webpage, AccessRecord và dưới from django.http import HttpResponse\n\n2. sửa lại hàm index thành\ndef index(request):\n    webpages_list = AccessRecord.objects.order_by('date')\n    date_dict = {'access_records': webpages_list}\n    return render(request, 'first_app/index.html', context=date_dict)`;
+
+    document.getElementById('lyThuyet').value = ltSample;
+    document.getElementById('thucHanh').value = thSample;
+    document.getElementById('demo').value = dmSample;
+  }
+</script>
+</body>
+</html>
