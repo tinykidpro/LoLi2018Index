@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayFessional - Business Plan Interactive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcfcfc;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .active-tab {
+            background-color: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+        }
+        .inactive-tab {
+            background-color: #ffffff;
+            color: #64748b;
+            border-color: #e2e8f0;
+        }
+        .step-active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .step-inactive {
+            border-color: #e2e8f0;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Chosen Palette: Warm Neutrals & Slate (Bg: #fcfcfc, Text: #1e293b, Accents: #3b82f6/Blue & #0f172a/Slate) -->
+    <!-- Application Structure Plan: Dashboard-style single page with logical flow. 1. Hero (Core Identity). 2. Ecosystem & Personas (Grid layout). 3. Product Experience (Interactive Tabs & Stepper). 4. Business & Monetization (Chart). 5. Execution/Roadmap (Timeline). This allows investors/stakeholders to consume the plan logically from vision to product to business model, actively engaging with tabs and steps. -->
+    <!-- Visualization & Content Choices: Ecosystem -> Grid Cards -> Hover effects -> Quick overview of 4 target audiences. User Flow -> Interactive Stepper -> Click to view step details -> Explains the 'How it works'. Industry UI -> Tabs -> Click to switch content -> Shows specific use cases without clutter. Revenue -> Chart.js Donut -> Visual breakdown of income streams -> Easy to digest financial logic. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="fixed top-0 w-full glass-card z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <span class="text-2xl font-black text-slate-900 tracking-tighter">PlayFessional<span class="text-blue-600">.</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#tong-quan" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Tầm Nhìn</a>
+                    <a href="#he-sinh-thai" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Hệ Sinh Thái</a>
+                    <a href="#san-pham" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Sản Phẩm</a>
+                    <a href="#ai-demo" class="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-80 transition-opacity">AI Demo ✨</a>
+                    <a href="#chuyen-mon" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Chuyên Môn</a>
+                    <a href="#kinh-doanh" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Mô Hình Kinh Doanh</a>
+                    <a href="#thuc-thi" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Lộ Trình</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-20">
+        <section id="tong-quan" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 flex flex-col items-center text-center">
+            <p class="mb-6 px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold border border-blue-100 tracking-wide uppercase shadow-sm">
+                Bản Kế Hoạch Kinh Doanh - Version 3.0
+            </p>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-8">
+                Chơi Trong Công Việc,<br><br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Thăng Tiến Đời Thực.</span>
+            </h1>
+            <p class="mt-4 text-xl text-slate-600 max-w-3xl mb-12 leading-relaxed">
+                PlayFessional là Mạng xã hội Nghề nghiệp Thực chiến (Action-based Professional Network). Xóa bỏ khoảng cách giữa lý thuyết và thực tiễn bằng cách "Game hóa" quá trình làm việc.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl text-left">
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl mb-4">✨</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Aesthetic Workspace</h3>
+                    <p class="text-slate-600 text-sm">Không gian làm việc ảo Lofi chill, tạo động lực làm việc và học tập cực cao.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-t-4 border-t-blue-500">
+                    <div class="text-3xl mb-4">💻</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Professional Simulation</h3>
+                    <p class="text-slate-600 text-sm">Giả lập giao diện phần mềm thực tế (Jira, ERP, HIS) của từng ngành nghề.</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl mb-4">🎮</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Gamified Learning</h3>
+                    <p class="text-slate-600 text-sm">Xử lý tình huống, làm task nhận XP, xây dựng Portfolio năng lực thực chiến.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="he-sinh-thai" class="bg-slate-50 py-20 border-y border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Hệ Sinh Thái Đa Chiều</h2>
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Phần này trình bày cấu trúc mạng lưới của PlayFessional. Đây không chỉ là game cho cá nhân, mà là cầu nối kết nối 4 nhóm đối tượng trọng yếu trong thị trường lao động. Nhấp vào từng đối tượng để xem vai trò.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow cursor-default group">
+                        <div class="w-12 h-12 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">👨‍🎓</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">B2C: Người Dùng Trẻ</h3>
+                        <p class="text-slate-600 text-sm mb-4">Sinh viên, người chuyển ngành, freelancer. Những người cần rèn kỹ năng thực tế.</p>
+                        <div class="pt-4 border-t border-slate-100">
+                            <ul class="text-sm text-slate-500 space-y-2">
+                                <li>• Xây portfolio thực chiến</li>
+                                <li>• Trải nghiệm áp lực công việc</li>
+                                <li>• Tìm động lực làm việc (Lofi/Pomodoro)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow cursor-default group">
+                        <div class="w-12 h-12 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">🏢</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">B2B: Nhà Tuyển Dụng</h3>
+                        <p class="text-slate-600 text-sm mb-4">Phòng HR, Headhunter muốn tìm kiếm nhân sự làm được việc ngay lập tức.</p>
+                        <div class="pt-4 border-t border-slate-100">
+                            <ul class="text-sm text-slate-500 space-y-2">
+                                <li>• Săn ứng viên điểm cao</li>
+                                <li>• Xem "Replay" thao tác ứng viên</li>
+                                <li>• Tuyển dụng qua "Quest" tài trợ</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow cursor-default group">
+                        <div class="w-12 h-12 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-2xl mb-4 group-hover:bg-amber-600 group-hover:text-white transition-colors">⚙️</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">B2B: Cty Phần Mềm</h3>
+                        <p class="text-slate-600 text-sm mb-4">Các nhà cung cấp SaaS (Jira, MISA, SAP) muốn "educate" thị trường sớm.</p>
+                        <div class="pt-4 border-t border-slate-100">
+                            <ul class="text-sm text-slate-500 space-y-2">
+                                <li>• Tài trợ giao diện game</li>
+                                <li>• Đào tạo người dùng tiềm năng</li>
+                                <li>• Product Placement nhúng</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow cursor-default group">
+                        <div class="w-12 h-12 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-2xl mb-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">🎓</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">B2B: Đơn Vị Giáo Dục</h3>
+                        <p class="text-slate-600 text-sm mb-4">Các trường đại học, trung tâm bán khóa học muốn nhắm đúng đối tượng.</p>
+                        <div class="pt-4 border-t border-slate-100">
+                            <ul class="text-sm text-slate-500 space-y-2">
+                                <li>• Quảng cáo theo điểm yếu UI</li>
+                                <li>• Đề xuất khóa học đúng lúc</li>
+                                <li>• Cung cấp bài test thực hành</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="san-pham" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">Trải Nghiệm Sản Phẩm</h2>
+                <p class="text-lg text-slate-600 max-w-3xl mx-auto text-center">
+                    Khám phá cách một người dùng thực sự tương tác với PlayFessional. Phần này cho phép bạn tương tác trực tiếp: chọn các bước luồng người dùng (User Flow) để xem quy trình, sau đó chuyển đổi giữa các ngành nghề để xem chi tiết mô phỏng.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden mb-16">
+                <div class="border-b border-slate-200 bg-slate-50 px-6 py-4">
+                    <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2"><span>🔄</span> Core User Flow</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3">
+                    <div class="col-span-1 border-r border-slate-200 p-6 space-y-3 bg-white" id="flow-stepper">
+                    </div>
+                    <div class="col-span-1 md:col-span-2 p-8 lg:p-12 bg-slate-50 flex items-center justify-center min-h-[300px]">
+                        <div id="flow-content" class="text-center w-full max-w-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6">Mô Phỏng Đa Ngành (Mini-Games)</h3>
+                <div class="flex flex-wrap gap-3 mb-8 border-b border-slate-200 pb-4" id="industry-tabs">
+                </div>
+                
+                <div id="industry-content" class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 min-h-[250px] shadow-sm">
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW AI DEMO SECTION -->
+        <section id="ai-demo" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-indigo-50 -z-10 rounded-3xl opacity-70"></div>
+            
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-indigo-600 mb-4">Live Demo: Tương Tác Cùng AI Mentor ✨</h2>
+                <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+                    Trải nghiệm trực tiếp cốt lõi công nghệ của PlayFessional. Hãy chọn một ngành nghề, AI (Gemini) sẽ sinh ra một kịch bản tình huống thực tế. Sau đó, hãy thử nhập cách giải quyết của bạn để được AI Mentor đánh giá tức thì!
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-purple-100 shadow-xl overflow-hidden p-6 md:p-10 max-w-4xl mx-auto">
+                <!-- Step 1: Generate Task -->
+                <div class="mb-8 border-b border-slate-100 pb-8">
+                    <div class="flex flex-col md:flex-row gap-4 items-end">
+                        <div class="w-full md:w-2/3">
+                            <label class="block text-sm font-bold text-slate-700 mb-2">1. Chọn Ngành Nghề Chuyên Môn</label>
+                            <select id="ai-industry-select" class="w-full p-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-slate-50 outline-none text-slate-700">
+                                <option value="IT (Lập trình viên, QA, Quản lý dự án)">💻 Công Nghệ Thông Tin (Dev/QA)</option>
+                                <option value="Y Tế (Bác sĩ cấp cứu, Điều dưỡng)">🏥 Y Tế & Chăm Sóc Sức Khỏe</option>
+                                <option value="Kế Toán - Tài Chính (Kế toán thuế, Kiểm toán)">📊 Kế Toán & Tài Chính</option>
+                                <option value="Logistics (Điều phối kho, Vận tải)">🚢 Logistics & Chuỗi Cung Ứng</option>
+                            </select>
+                        </div>
+                        <div class="w-full md:w-1/3">
+                            <button id="btn-generate-task" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
+                                <span>Tạo Tình Huống ✨</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Display Task & Take Input (Hidden initially) -->
+                <div id="ai-task-container" class="hidden animate-[fadeIn_0.5s_ease-out] mb-8">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-6 relative">
+                        <span class="absolute -top-3 left-6 bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-200 uppercase tracking-wide">Email / Task Mới 📥</span>
+                        <div id="ai-generated-task" class="text-slate-800 mt-2 whitespace-pre-line leading-relaxed">
+                            <!-- Task text will appear here -->
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">2. Nhập cách bạn xử lý tình huống này (Đóng vai nhân viên):</label>
+                        <textarea id="ai-user-solution" rows="4" class="w-full p-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white outline-none text-slate-800 placeholder-slate-400 resize-none" placeholder="Ví dụ: Đầu tiên tôi sẽ kiểm tra lại... Sau đó tôi phản hồi khách hàng rằng..."></textarea>
+                    </div>
+
+                    <button id="btn-evaluate-solution" class="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl hover:bg-slate-800 transition-colors w-full md:w-auto flex justify-center items-center gap-2">
+                        <span>Nộp Bài & Gọi Mentor Đánh Giá ✨</span>
+                    </button>
+                </div>
+
+                <!-- Step 3: Mentor Feedback (Hidden initially) -->
+                <div id="ai-feedback-container" class="hidden animate-[fadeIn_0.5s_ease-out]">
+                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-6 relative">
+                        <span class="absolute -top-3 left-6 bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full border border-emerald-200 uppercase tracking-wide">Đánh Giá Từ Senior Mentor 🧠</span>
+                        <div id="ai-mentor-feedback" class="text-slate-800 mt-2 whitespace-pre-line leading-relaxed">
+                            <!-- Feedback text will appear here -->
+                        </div>
+                        <div id="ai-mentor-score" class="mt-4 pt-4 border-t border-emerald-200/50 flex items-center justify-between font-bold text-emerald-800">
+                            <!-- Score will appear here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading Overlay -->
+                <div id="ai-loading" class="hidden mt-6 flex justify-center items-center gap-3 text-purple-600 font-medium">
+                    <svg class="animate-spin h-6 w-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span id="ai-loading-text">Gemini đang xử lý dữ liệu...</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="chuyen-mon" class="py-20 bg-blue-50/50 border-y border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-16 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Đảm Bảo Chất Lượng Chuyên Môn</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+                        "Task" (Nhiệm vụ) là trái tim của PlayFessional. Để đảm bảo tính thực tiễn và không bị sai lệch lý thuyết, chúng tôi vận hành một "Phễu Sản Xuất Nội Dung" kết hợp hoàn hảo giữa Trí tuệ nhân tạo (AI), Chuyên gia thực chiến và Cộng đồng.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+                    <!-- Line connecting steps (visible on lg screens) -->
+                    <div class="hidden lg:block absolute top-[40%] left-0 w-full h-1 bg-gradient-to-r from-blue-200 via-indigo-300 to-blue-200 -translate-y-1/2 z-0"></div>
+
+                    <!-- Step 1 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 relative z-10 flex flex-col h-full transform transition-transform hover:-translate-y-1">
+                        <div class="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl mb-6 shadow-sm border-4 border-white mx-auto">🤝</div>
+                        <h3 class="text-lg font-bold text-slate-900 text-center mb-3">1. Mạng Lưới Cố Vấn (Expert Network)</h3>
+                        <p class="text-slate-600 text-sm text-center">Hợp tác Part-time với các Senior Dev, Bác sĩ chuyên khoa, Kế toán trưởng. Họ không trực tiếp viết Task, mà đóng vai trò "Đạo diễn", cung cấp <strong>Core-Logic</strong> và các tình huống thực tế "đau đầu" nhất trong nghề.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 relative z-10 flex flex-col h-full transform transition-transform hover:-translate-y-1">
+                        <div class="w-14 h-14 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl mb-6 shadow-sm border-4 border-white mx-auto">🧠</div>
+                        <h3 class="text-lg font-bold text-slate-900 text-center mb-3">2. AI Human-in-the-Loop</h3>
+                        <p class="text-slate-600 text-sm text-center">AI (Gemini) tiếp nhận Core-Logic từ chuyên gia và tự động sinh ra hàng ngàn biến thể (vd: 1000 bệnh án khác nhau). Chuyên gia chỉ cần "Lướt và Duyệt" (Approve/Edit), tăng tốc độ sản xuất nội dung gấp 10 lần.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 relative z-10 flex flex-col h-full transform transition-transform hover:-translate-y-1">
+                        <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mb-6 shadow-sm border-4 border-white mx-auto">🏢</div>
+                        <h3 class="text-lg font-bold text-slate-900 text-center mb-3">3. B2B Case Studies Thực Tế</h3>
+                        <p class="text-slate-600 text-sm text-center">Doanh nghiệp đối tác (Tuyển dụng) cung cấp dữ liệu bài toán thực tế của công ty họ (đã được ẩn danh hóa). Điều này tạo ra các <strong>"Special Quests"</strong> cực kỳ sát với nhu cầu tuyển dụng thực tiễn.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 relative z-10 flex flex-col h-full transform transition-transform hover:-translate-y-1">
+                        <div class="w-14 h-14 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-2xl mb-6 shadow-sm border-4 border-white mx-auto">💡</div>
+                        <h3 class="text-lg font-bold text-slate-900 text-center mb-3">4. Nền Kinh Tế Sáng Tạo (UGC)</h3>
+                        <p class="text-slate-600 text-sm text-center">Người chơi đạt hạng <strong>Master</strong> được quyền dùng Tool AI của hệ thống để chế tạo Task thách đố người mới. Nếu Task được cộng đồng đánh giá 5 sao, họ nhận hoa hồng (Royalties) bằng tiền ảo hoặc tiền thật.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kinh-doanh" class="bg-[#0f172a] py-20 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Mô Hình Doanh Thu 360° (Đa Nguồn Thu)</h2>
+                    <p class="text-lg text-slate-300 max-w-3xl mx-auto">
+                        Mô hình kinh doanh không chỉ phụ thuộc vào người chơi, mà tập trung khai thác tối đa giá trị từ hệ sinh thái B2B (Tuyển dụng, Giáo dục) và Nền kinh tế sáng tạo. Biểu đồ minh họa cơ cấu dòng tiền bền vững.
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center mb-16">
+                    <div class="w-full max-w-2xl bg-slate-800 p-6 rounded-3xl border border-slate-700 shadow-2xl mb-10">
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full" id="revenue-details">
+                        <!-- Content will be injected by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="thuc-thi" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Lộ Trình & Kiến Trúc</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                    Chiến lược thực thi được chia thành các giai đoạn (Phases) rõ ràng, đi kèm nền tảng công nghệ mạnh mẽ được hỗ trợ bởi AI và Game Engine.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                <div class="col-span-1 lg:col-span-3">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-2"><span>🗺️</span> Lộ Trình Phát Triển Chi Tiết</h3>
+                    <div class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-blue-600 before:via-slate-300 before:to-transparent">
+                        
+                        <!-- Phase 1 -->
+                        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-blue-600 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 font-bold text-sm">Q1</div>
+                            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-card p-5 rounded-2xl border-blue-100 hover:border-blue-300 transition-colors shadow-sm">
+                                <span class="font-bold text-blue-600 text-xs tracking-wider uppercase bg-blue-50 px-2 py-1 rounded-md">MVP & Core Loop</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-3 mb-2">Xây Dựng "Phòng Làm Việc Ảo"</h4>
+                                <ul class="text-slate-600 text-sm space-y-1.5 list-disc list-inside">
+                                    <li>Ra mắt giao diện Lofi Aesthetic.</li>
+                                    <li>Hoàn thiện 2 Module giả lập đầu tiên: Bác sĩ (HIS) & Lập trình viên (Jira/IDE).</li>
+                                    <li>Tích hợp Gemini AI tạo 10,000+ Task ngẫu nhiên.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Phase 2 -->
+                        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-indigo-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 font-bold text-sm">Q2</div>
+                            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-card p-5 rounded-2xl hover:border-indigo-300 transition-colors shadow-sm">
+                                <span class="font-bold text-indigo-600 text-xs tracking-wider uppercase bg-indigo-50 px-2 py-1 rounded-md">Social & Gamification</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-3 mb-2">Hệ Sinh Thái Người Chơi</h4>
+                                <ul class="text-slate-600 text-sm space-y-1.5 list-disc list-inside">
+                                    <li>Ra mắt Cây Kỹ Năng (Skill Tree) & Public Portfolio.</li>
+                                    <li>Mở tính năng "Lofi Co-working Rooms" (Làm việc chung).</li>
+                                    <li>Phát hành Season Pass mùa 1 (Phần thưởng UI).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Phase 3 -->
+                        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-emerald-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 font-bold text-sm">Q3</div>
+                            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-card p-5 rounded-2xl hover:border-emerald-300 transition-colors shadow-sm">
+                                <span class="font-bold text-emerald-600 text-xs tracking-wider uppercase bg-emerald-50 px-2 py-1 rounded-md">Monetization & B2B</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-3 mb-2">Cổng Tuyển Dụng & Đào Tạo</h4>
+                                <ul class="text-slate-600 text-sm space-y-1.5 list-disc list-inside">
+                                    <li>Ra mắt Recruiter Dashboard cho HR săn ứng viên.</li>
+                                    <li>Thí điểm "Quest Doanh Nghiệp" (Tài trợ từ FPT, VNG...).</li>
+                                    <li>Hệ thống Banner Affiliate giới thiệu khóa học theo Context.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Phase 4 -->
+                        <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-amber-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 font-bold text-sm">Q4</div>
+                            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] glass-card p-5 rounded-2xl hover:border-amber-300 transition-colors shadow-sm">
+                                <span class="font-bold text-amber-600 text-xs tracking-wider uppercase bg-amber-50 px-2 py-1 rounded-md">Scale & UGC</span>
+                                <h4 class="font-bold text-slate-900 text-lg mt-3 mb-2">Nền Kinh Tế Sáng Tạo</h4>
+                                <ul class="text-slate-600 text-sm space-y-1.5 list-disc list-inside">
+                                    <li>Phát hành Tool tạo Task cho cộng đồng (User-generated Content).</li>
+                                    <li>Tính năng Bang hội "Startup Ảo" giải Mega Quest.</li>
+                                    <li>Đóng gói API Đào tạo bán cho doanh nghiệp nội bộ.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-span-1 lg:col-span-2">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-8">Kiến Trúc Kỹ Thuật</h3>
+                    <div class="flex flex-col gap-4">
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 flex items-start gap-4">
+                            <div class="text-2xl mt-1">🕹️</div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Frontend & Game UI</h4>
+                                <p class="text-sm text-slate-600 font-medium">LayaEngine (Game) + Next.js (Web Platform)</p>
+                                <p class="text-xs text-slate-500 mt-1">LayaEngine tối ưu HTML5/WebGL cho các màn giả lập Dashboard/ERP cực mượt, trong khi Next.js xử lý hệ thống Web Mạng xã hội & Tuyển dụng bên ngoài.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 flex items-start gap-4">
+                            <div class="text-2xl mt-1">⚙️</div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Backend & Data</h4>
+                                <p class="text-sm text-slate-600 font-medium">NestJS + PostgreSQL + Neo4j</p>
+                                <p class="text-xs text-slate-500 mt-1">Neo4j (Graph DB) để phân tích mạng lưới năng lực và gợi ý việc làm.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border-l-4 border-l-blue-500 flex items-start gap-4">
+                            <div class="text-2xl mt-1">🤖</div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Generative AI Core</h4>
+                                <p class="text-sm text-blue-600 font-bold">Google Gemini API</p>
+                                <p class="text-xs text-slate-500 mt-1">Tự sinh kịch bản vô hạn, đóng vai khách hàng/sếp chat realtime, phân tích Culture Fit.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 flex items-start gap-4">
+                            <div class="text-2xl mt-1">🎵</div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Audio & Realtime</h4>
+                                <p class="text-sm text-slate-600 font-medium">Web Audio API + Socket.io</p>
+                                <p class="text-xs text-slate-500 mt-1">Xử lý nhạc lofi liền mạch và đẩy sự kiện bất ngờ (server sập).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-20 pt-10 border-t border-slate-200">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6 text-center">Quản Trị Rủi Ro Cốt Lõi</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-red-50 p-6 rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="font-bold text-red-800 text-lg mb-2 flex items-center gap-2"><span>⚠️</span> Ảo Tưởng Sức Mạnh</h4>
+                        <p class="text-sm text-red-600 mb-4">Người chơi có điểm số cao sinh ra tâm lý tự mãn ngoài đời thực, đưa ra quyết định sai lầm (đặc biệt trong y tế).</p>
+                        <div class="bg-white p-4 rounded-xl border border-red-200 text-sm text-slate-700">
+                            <strong>Giải pháp:</strong> Luôn hiển thị Disclaimer bắt buộc trước khi vào "Ca làm việc". Các task được thiết kế để nhấn mạnh việc "cần tham vấn ý kiến chuyên gia thật".
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-2xl border border-amber-100 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="font-bold text-amber-800 text-lg mb-2 flex items-center gap-2"><span>🤖</span> AI Hallucination</h4>
+                        <p class="text-sm text-amber-600 mb-4">Mô hình ngôn ngữ lớn (Gemini) tự suy diễn, tạo ra bệnh án hoặc kịch bản lỗi code phi logic, sai lệch chuyên môn.</p>
+                        <div class="bg-white p-4 rounded-xl border border-amber-200 text-sm text-slate-700">
+                            <strong>Giải pháp:</strong> Áp dụng cơ chế "Human-in-the-Loop". Chuyên gia phải Approve task mẫu trước. Cung cấp nút [Báo cáo Lỗi Nghiệp Vụ] cho người chơi, thưởng điểm khi phát hiện AI sai.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Highlighted Retention Solutions -->
+                <div class="bg-gradient-to-br from-indigo-50 to-blue-50 p-8 rounded-3xl border border-indigo-100 shadow-md">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <div>
+                            <h4 class="font-extrabold text-indigo-900 text-xl md:text-2xl">Bài Toán: Tỷ Lệ Giữ Chân (Retention) Kém</h4>
+                            <p class="text-indigo-700 mt-1">Người dùng dễ chán việc "cày task" đơn độc sau vài tuần do thiếu tính gắn kết cộng đồng và mục tiêu dài hạn.</p>
+                        </div>
+                        <span class="px-4 py-2 bg-indigo-600 text-white rounded-full text-sm font-bold shadow-sm whitespace-nowrap">Giải Pháp Đột Phá</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                        <div class="bg-white p-5 rounded-2xl border border-indigo-50 shadow-sm hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-3xl mb-3">🎧</div>
+                            <span class="font-bold text-slate-900 text-lg block mb-2">Lofi Co-working Rooms</span>
+                            <p class="text-sm text-slate-600">Phòng làm việc chung (Multiplayer). Áp dụng mô hình "Body Doubling": Bật đồng hồ Pomodoro và làm việc cùng những người lạ có bật avatar/mic lofi. Tăng x3 sự tập trung và gắn kết.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-indigo-50 shadow-sm hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-3xl mb-3">🎫</div>
+                            <span class="font-bold text-slate-900 text-lg block mb-2">Professional Battle Pass</span>
+                            <p class="text-sm text-slate-600">Áp dụng cơ chế "Mùa giải" (Season) 3 tháng/lần của các game eSports. Cày cấp độ nghề nghiệp để mở khóa Theme phần mềm độc quyền, danh hiệu hiếm và khung viền Avatar LinkedIn.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-indigo-50 shadow-sm hover:-translate-y-1 transition-transform duration-300">
+                            <div class="text-3xl mb-3">🚀</div>
+                            <span class="font-bold text-slate-900 text-lg block mb-2">Bang Hội "Startup Ảo"</span>
+                            <p class="text-sm text-slate-600">Tính năng kết hợp Team (1 Dev + 1 BA + 1 Tester). Cùng nhau tham gia giải quyết một "Mega Quest" (Dự án lớn) do các tập đoàn thực tế tài trợ để chia nhau quỹ thưởng thật.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center border-t border-slate-800">
+        <p class="font-bold text-white text-xl mb-2 tracking-tighter">PlayFessional.</p>
+        <p class="text-sm">Bản tóm tắt tương tác dựa trên Kế hoạch Kinh doanh V3.0.</p>
+    </footer>
+
+    <script>
+        const flowData = [
+            { title: "1. Onboarding", icon: "👋", short: "Đăng nhập & Khởi tạo", desc: "Người chơi tạo hồ sơ, làm bài test tính cách ngắn để hệ thống AI gợi ý 'Career Path' (Nhánh nghề nghiệp) phù hợp nhất với bản thân." },
+            { title: "2. Văn Phòng Ảo", icon: "☕", short: "Aesthetic Workspace", desc: "Giao diện chính mở ra: Một góc làm việc cá nhân hóa, view cửa sổ thành phố, nhạc Lofi tự động phát, đồng hồ Pomodoro sẵn sàng." },
+            { title: "3. Nhận Task", icon: "📥", short: "Kiểm tra Inbox", desc: "Mở màn hình máy tính trong game. Truy cập phần mềm giả lập (VD: Màn hình quản lý dự án). Có 3 task đang chờ xử lý từ hệ thống sinh ra ngẫu nhiên." },
+            { title: "4. Thực Thi", icon: "⚙️", short: "Xử lý Công việc", desc: "Đọc tài liệu, check requirement, phân tích dữ liệu, click chẩn đoán, viết code hoặc tương tác chat với 'Đồng nghiệp AI'." },
+            { title: "5. Phần Thưởng", icon: "🏆", short: "XP & Đánh giá", desc: "Hoàn thành task. Nhận điểm Kinh nghiệm (XP), Tiền tệ ảo (WP). Đặc biệt: AI Mentor xuất hiện phân tích lỗi sai và đưa lời khuyên chuyên môn." }
+        ];
+
+        let currentFlowStep = 0;
+
+        function renderFlowStepper() {
+            const container = document.getElementById('flow-stepper');
+            container.innerHTML = '';
+            flowData.forEach((step, index) => {
+                const isActive = index === currentFlowStep;
+                const baseClasses = "flex items-center gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all duration-200";
+                const activeClasses = isActive ? "step-active shadow-sm" : "step-inactive hover:bg-slate-50";
+                
+                const html = `
+                    <div class="${baseClasses} ${activeClasses}" onclick="updateFlowContent(${index})">
+                        <div class="text-2xl">${step.icon}</div>
+                        <div class="flex-1 text-left">
+                            <h4 class="font-bold ${isActive ? 'text-blue-700' : 'text-slate-700'} text-sm">${step.title}</h4>
+                            <p class="text-xs ${isActive ? 'text-blue-500' : 'text-slate-500'} font-medium mt-0.5">${step.short}</p>
+                        </div>
+                        <div class="${isActive ? 'text-blue-500' : 'text-transparent'} text-xl">»</div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+            updateFlowContentBody();
+        }
+
+        function updateFlowContent(index) {
+            currentFlowStep = index;
+            renderFlowStepper();
+        }
+
+        function updateFlowContentBody() {
+            const content = document.getElementById('flow-content');
+            const step = flowData[currentFlowStep];
+            content.innerHTML = `
+                <div class="animate-[fadeIn_0.3s_ease-out]">
+                    <div class="text-6xl mb-6 drop-shadow-md">${step.icon}</div>
+                    <h3 class="text-2xl font-black text-slate-900 mb-4">${step.title}: ${step.short}</h3>
+                    <p class="text-lg text-slate-600 leading-relaxed">${step.desc}</p>
+                </div>
+            `;
+        }
+
+        const industryData = [
+            {
+                id: 'it',
+                name: 'Công Nghệ Thông Tin',
+                icon: '💻',
+                ui: 'Quản lý dự án (Jira), IDE Code, Slack',
+                hardSkill: 'Tìm bug trong Git, Review code của đồng nghiệp ảo.',
+                softSkill: 'Họp Daily Standup, xử lý PM ép deadline hoặc đổi Requirement phút chót.',
+                color: 'blue'
+            },
+            {
+                id: 'health',
+                name: 'Y Tế & Chăm Sóc',
+                icon: '🏥',
+                ui: 'Hệ thống Thông tin Bệnh viện (HIS/EMR)',
+                hardSkill: 'Phân loại cấp cứu (Triage), đọc xét nghiệm máu, chẩn đoán bệnh.',
+                softSkill: 'Bedside manner (Xoa dịu bệnh nhân phàn nàn viện phí, gây rối).',
+                color: 'emerald'
+            },
+            {
+                id: 'backoffice',
+                name: 'Kế Toán & ERP',
+                icon: '📊',
+                ui: 'Hệ thống ERP (SAP/MISA) & Email Cty',
+                hardSkill: 'Đối soát hóa đơn lệch, nhập kho, sắp xếp tuyến giao hàng.',
+                softSkill: 'Xử lý Office Politics: Sếp yêu cầu chi sai luật, hòa giải team Sales/Kế toán.',
+                color: 'amber'
+            }
+        ];
+
+        let currentIndustry = 'it';
+
+        function renderIndustryTabs() {
+            const tabsContainer = document.getElementById('industry-tabs');
+            tabsContainer.innerHTML = '';
+            industryData.forEach(ind => {
+                const isActive = ind.id === currentIndustry;
+                const bgClass = isActive ? `bg-${ind.color}-600 text-white border-${ind.color}-600 shadow-md` : `bg-white text-slate-600 border-slate-200 hover:bg-slate-50`;
+                
+                const btn = `
+                    <button onclick="setIndustry('${ind.id}')" class="px-5 py-2.5 rounded-full font-bold text-sm border transition-all ${bgClass}">
+                        ${ind.icon} ${ind.name}
+                    </button>
+                `;
+                tabsContainer.innerHTML += btn;
+            });
+            renderIndustryContent();
+        }
+
+        function setIndustry(id) {
+            currentIndustry = id;
+            renderIndustryTabs();
+        }
+
+        function renderIndustryContent() {
+            const content = document.getElementById('industry-content');
+            const ind = industryData.find(i => i.id === currentIndustry);
+            
+            content.innerHTML = `
+                <div class="animate-[fadeIn_0.3s_ease-out] grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-400 uppercase tracking-wide text-xs mb-2">Giao diện giả lập</h4>
+                        <div class="bg-slate-100 p-4 rounded-xl border border-slate-200 font-mono text-sm text-slate-800 mb-6 flex items-center gap-3">
+                            <span class="text-2xl">🖥️</span> ${ind.ui}
+                        </div>
+                        
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-8 h-8 rounded-full bg-${ind.color}-100 text-${ind.color}-600 flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-slate-900 text-lg">Kỹ năng Cứng (Hard Skills)</h4>
+                        </div>
+                        <p class="text-slate-600 pl-10 border-l-2 border-${ind.color}-200 ml-4 pb-2">${ind.hardSkill}</p>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center gap-2 mb-4 mt-6 md:mt-0">
+                            <span class="w-8 h-8 rounded-full bg-${ind.color}-100 text-${ind.color}-600 flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-slate-900 text-lg">Văn hóa & Kỹ năng mềm</h4>
+                        </div>
+                        <p class="text-slate-600 pl-10 border-l-2 border-${ind.color}-200 ml-4 pb-2 mb-6">${ind.softSkill}</p>
+                        
+                        <div class="bg-${ind.color}-50 p-4 rounded-xl border border-${ind.color}-100">
+                            <p class="text-sm text-${ind.color}-800 font-medium"><strong>Mạng xã hội:</strong> Hoàn thành xuất sắc có thể xuất thành Replay Video đính kèm vào Public Profile để Nhà tuyển dụng đánh giá.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            
+            const revenueData = {
+                labels: [
+                    'Truy Cập Tuyển Dụng (B2B HR)', 
+                    'Gói Premium User (B2C)', 
+                    'Tài Trợ Phần Mềm (B2B SaaS)', 
+                    'Thuê API Đào Tạo (B2B)', 
+                    'Quảng Cáo Khóa Học (B2B Edu)',
+                    'Vật Phẩm & Cá Nhân Hóa (B2C)'
+                ],
+                datasets: [{
+                    data: [30, 20, 15, 15, 10, 10],
+                    backgroundColor: [
+                        '#10b981', // Emerald - Tuyển dụng
+                        '#3b82f6', // Blue - Premium
+                        '#f59e0b', // Amber - SaaS
+                        '#6366f1', // Indigo - API
+                        '#8b5cf6', // Purple - Edu Ads
+                        '#ec4899'  // Pink - Items
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#1e293b',
+                    hoverOffset: 12
+                }]
+            };
+
+            const config = {
+                type: 'doughnut',
+                data: revenueData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: 10
+                    },
+                    plugins: {
+                        legend: {
+                            display: false 
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            padding: 16,
+                            cornerRadius: 12,
+                            titleFont: { size: 14, family: "'Plus Jakarta Sans', sans-serif" },
+                            bodyFont: { size: 15, font: 'bold', family: "'Plus Jakarta Sans', sans-serif" },
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '% tỷ trọng';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '75%'
+                }
+            };
+
+            new Chart(ctx, config);
+
+            const detailsContainer = document.getElementById('revenue-details');
+            let detailsHtml = '';
+            
+            const desc = [
+                { icon: '🎯', title: 'Truy Cập Database Tuyển Dụng', type: 'B2B - Nhân Sự', desc: 'HR mua gói truy cập ứng viên điểm cao, xem "Replay" khả năng xử lý tình huống thực tế.', color: 'emerald' },
+                { icon: '💎', title: 'Gói Pro Worker (Subscription)', type: 'B2C - Người dùng', desc: 'Gói tháng mở khóa AI Mentor tư vấn sâu, không giới hạn năng lượng ca làm việc.', color: 'blue' },
+                { icon: '🧩', title: 'Tài Trợ Giao Diện (Product Placement)', type: 'B2B - Công ty SaaS', desc: 'Các hãng phần mềm trả tiền để game sử dụng giao diện UI của họ, giúp "educate" người dùng sớm.', color: 'amber' },
+                { icon: '🔌', title: 'Cho Thuê API Giả Lập Đào Tạo', type: 'B2B - Doanh Nghiệp', desc: 'Đóng gói game thành một module (White-label) nhúng vào hệ thống đào tạo nội bộ của tập đoàn.', color: 'indigo' },
+                { icon: '📚', title: 'Affiliate Quảng Cáo Khóa Học', type: 'B2B - Trung Tâm GD', desc: 'Gợi ý khóa học ngắn hạn ngay khi AI phát hiện người chơi liên tục thất bại ở một kỹ năng cụ thể.', color: 'purple' },
+                { icon: '🪴', title: 'Vật Phẩm Ảo & Cá Nhân Hóa', type: 'B2C - Người dùng', desc: 'Bán nội thất ảo trang trí bàn làm việc lofi, thú cưng ảo, hoặc phí kết nối với Mentor thật (1-1).', color: 'pink' }
+            ];
+
+            desc.forEach((item, i) => {
+                detailsHtml += `
+                    <div class="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/50 flex flex-col hover:border-${item.color}-500 hover:bg-slate-800 hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-full bg-${item.color}-500/10 text-${item.color}-400 flex items-center justify-center text-xl border border-${item.color}-500/20">
+                                ${item.icon}
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-base leading-tight">${item.title}</h4>
+                                <span class="text-[10px] font-bold tracking-wider uppercase text-${item.color}-400">${item.type}</span>
+                            </div>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed">${item.desc}</p>
+                    </div>
+                `;
+            });
+            detailsContainer.innerHTML = detailsHtml;
+        }
+
+        // --- GEMINI API INTEGRATION ---
+        const apiKey = ""; // Execution environment provides the key at runtime
+        
+        async function fetchWithRetry(url, options, retries = 5) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return await response.json();
+                } catch (e) {
+                    if (i === retries - 1) throw e;
+                    console.warn(`API call failed, retrying in ${delays[i]}ms...`);
+                    await new Promise(res => setTimeout(res, delays[i]));
+                }
+            }
+        }
+
+        async function callGemini(prompt, systemInstruction) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    systemInstruction: { parts: [{ text: systemInstruction }] }
+                })
+            };
+            const result = await fetchWithRetry(url, options);
+            return result.candidates?.[0]?.content?.parts?.[0]?.text || "Không thể tạo nội dung, vui lòng thử lại.";
+        }
+
+        // UI Logic for AI Demo
+        const btnGenerateTask = document.getElementById('btn-generate-task');
+        const btnEvaluateSolution = document.getElementById('btn-evaluate-solution');
+        const aiLoading = document.getElementById('ai-loading');
+        const aiLoadingText = document.getElementById('ai-loading-text');
+        const aiTaskContainer = document.getElementById('ai-task-container');
+        const aiFeedbackContainer = document.getElementById('ai-feedback-container');
+        const taskDisplay = document.getElementById('ai-generated-task');
+        const feedbackDisplay = document.getElementById('ai-mentor-feedback');
+        const scoreDisplay = document.getElementById('ai-mentor-score');
+        const userSolutionInput = document.getElementById('ai-user-solution');
+        
+        let currentGeneratedTask = "";
+
+        btnGenerateTask.addEventListener('click', async () => {
+            const industry = document.getElementById('ai-industry-select').value;
+            
+            // UI Reset
+            aiTaskContainer.classList.add('hidden');
+            aiFeedbackContainer.classList.add('hidden');
+            userSolutionInput.value = "";
+            aiLoading.classList.remove('hidden');
+            btnGenerateTask.disabled = true;
+            aiLoadingText.innerText = `AI đang tạo kịch bản thực tế ngành ${industry.split('(')[0]}...`;
+
+            const systemInstruction = "Bạn là một chuyên gia ra đề thi thực chiến cho nền tảng PlayFessional. Hãy tạo một tình huống công việc thực tế, ngắn gọn (khoảng 3-4 câu) đòi hỏi người chơi phải xử lý một rắc rối hoặc một vấn đề cụ thể. Viết bằng tiếng Việt chuyên nghiệp, giọng văn như một email yêu cầu công việc hoặc lời phàn nàn của khách hàng.";
+            const prompt = `Tạo một tình huống công việc trong lĩnh vực: ${industry}.`;
+
+            try {
+                const responseText = await callGemini(prompt, systemInstruction);
+                currentGeneratedTask = responseText;
+                taskDisplay.innerText = responseText;
+                aiLoading.classList.add('hidden');
+                aiTaskContainer.classList.remove('hidden');
+            } catch (error) {
+                taskDisplay.innerText = "Lỗi kết nối API. Vui lòng thử lại sau.";
+                aiLoading.classList.add('hidden');
+                aiTaskContainer.classList.remove('hidden');
+            } finally {
+                btnGenerateTask.disabled = false;
+            }
+        });
+
+        btnEvaluateSolution.addEventListener('click', async () => {
+            const solution = userSolutionInput.value.trim();
+            if (!solution) {
+                alert("Vui lòng nhập giải pháp của bạn trước khi nộp bài!");
+                return;
+            }
+
+            aiFeedbackContainer.classList.add('hidden');
+            aiLoading.classList.remove('hidden');
+            btnEvaluateSolution.disabled = true;
+            aiLoadingText.innerText = "Senior Mentor đang phân tích và chấm điểm bài làm của bạn...";
+
+            const systemInstruction = "Bạn là một Senior Manager đóng vai trò là Mentor trong game PlayFessional. Người chơi vừa nhận được một tình huống công việc và họ đã đưa ra cách xử lý. Nhiệm vụ của bạn: 1. Đánh giá ngắn gọn (tối đa 3 câu) về tính thực tế, điểm tốt và rủi ro trong cách xử lý của họ. 2. Cuối cùng, hãy chấm một số điểm XP từ 1 đến 100 theo định dạng: 'Điểm: [Số điểm] XP'. Giọng văn mang tính xây dựng, khách quan.";
+            const prompt = `TÌNH HUỐNG BAN ĐẦU:\n${currentGeneratedTask}\n\nCÁCH XỬ LÝ CỦA NHÂN VIÊN (NGƯỜI CHỌI):\n${solution}\n\nHãy nhận xét và chấm điểm.`;
+
+            try {
+                const responseText = await callGemini(prompt, systemInstruction);
+                
+                // Extract score if exists
+                const scoreMatch = responseText.match(/Điểm:\s*(\d+)\s*XP/i) || responseText.match(/(\d+)\s*XP/i);
+                const score = scoreMatch ? parseInt(scoreMatch[1]) : null;
+                
+                // Remove the score from main text to format it beautifully
+                let cleanFeedback = responseText.replace(/Điểm:\s*\d+\s*XP/i, '').replace(/\d+\s*XP/i, '').trim();
+
+                feedbackDisplay.innerText = cleanFeedback;
+                
+                if (score !== null) {
+                    let evaluationMsg = score >= 80 ? "🎯 Rất xuất sắc!" : (score >= 50 ? "✅ Chấp nhận được" : "⚠️ Cần cải thiện");
+                    scoreDisplay.innerHTML = `<span>Thưởng nhiệm vụ: +${score} XP</span><span>${evaluationMsg}</span>`;
+                } else {
+                    scoreDisplay.innerHTML = `<span>Đã hoàn thành đánh giá chuyên môn</span>`;
+                }
+
+                aiLoading.classList.add('hidden');
+                aiFeedbackContainer.classList.remove('hidden');
+            } catch (error) {
+                feedbackDisplay.innerText = "Lỗi khi gọi Mentor. Hệ thống quá tải.";
+                aiLoading.classList.add('hidden');
+                aiFeedbackContainer.classList.remove('hidden');
+            } finally {
+                btnEvaluateSolution.disabled = false;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFlowStepper();
+            renderIndustryTabs();
+            initChart();
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
